@@ -1,0 +1,11 @@
+A project overview and journal
+
+Process:
+- Download/preprocess source (expand to pipeline after prototype)
+- Format for anomaly detection (NN or otherwise)
+- Visualization for output
+
+Notes:
+(Mars data source https://www.zooniverse.org/projects/mschwamb/planet-four)
+
+
