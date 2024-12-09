@@ -93,15 +93,13 @@ Each JSON contains:
 
 ## Usage
 
-python -m xenarch_mk2.main -f input.tif -o metrics.csv --grid-size 512 -v
+### Split Dataset
+python scripts/split_terrain.py -i ./xenarch_mk2/data/Lunar_LRO_LROC-WAC_Mosaic_global_100m_June2013.tif -o ./data/grids --cpu-fraction 0.8
 
-python scripts/split_terrain.py -i ./xenarch_mk2/data/Lunar_LRO_LROC-WAC_Mosaic_global_100m_June2013_sample100.tif -o ./data/grids --grid-size 512 --overlap 64 -v
-
-
-python scripts/split_terrain.py -i ./xenarch_mk2/data/WAC_Mosaic_global_100m_June2013_sample100.tif -o ./data/grids --cpu-fraction 0.8
-
+### Compute Metrics
 python scripts/generate_metrics.py -i ./data/grids -v
 
+### Analyze Results
 python scripts/analyze_results.py -i ./data/grids --fd-range 0.2 0.6 --r2-min 0.9 --cpu-fraction 0.8
 
 ### Parameters

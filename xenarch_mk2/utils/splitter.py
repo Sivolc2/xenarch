@@ -15,6 +15,7 @@ class TerrainSplitter:
     def __init__(self, grid_size: int = 512, overlap: int = 64, cpu_fraction: float = 0.5):
         self.grid_size = grid_size
         self.overlap = overlap
+        self.cpu_fraction = cpu_fraction
         
         # Set CPU limits
         n_cpus = max(1, int(multiprocessing.cpu_count() * cpu_fraction))
