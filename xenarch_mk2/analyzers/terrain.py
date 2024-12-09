@@ -4,6 +4,7 @@ import rasterio
 import logging
 from typing import Union, Dict, List, Generator
 from xenarch_mk2.metrics.fractal import FractalAnalyzer
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +34,7 @@ class TerrainAnalyzer:
                     fractal_dim, r_squared = self.fractal_analyzer.compute_fractal_dimension(grid)
                     
                     if not np.isnan(fractal_dim) and r_squared > 0.5:
-                        results.append({
+                        metrics = {
                             'grid_id': grid_id,
                             'position': (x, abs_y),
                             'size': self.grid_size,
@@ -41,10 +42,11 @@ class TerrainAnalyzer:
                             'r_squared': r_squared,
                             'mean_elevation': np.nanmean(grid),
                             'std_elevation': np.nanstd(grid)
-                        })
+                        }
                         
-                        # Save grid slice
-                        self.save_grid_slice(grid, grid_id)
+                        # Save both TIFF and metrics
+                        self.save_grid_data(grid, grid_id, metrics)
+                        results.append(metrics)
                         
                 except Exception as e:
                     logger.warning(f"Failed to process grid {grid_id}: {str(e)}")
@@ -52,15 +54,15 @@ class TerrainAnalyzer:
                     
         return results
     
-    def save_grid_slice(self, grid: np.ndarray, grid_id: str):
-        """Save a grid slice as a TIFF file"""
+    def save_grid_data(self, grid: np.ndarray, grid_id: str, metrics: Dict):
+        """Save grid slice as TIFF and corresponding metrics as JSON"""
         output_dir = Path("./data/processed_tiffs")
         output_dir.mkdir(parents=True, exist_ok=True)
         
-        output_path = output_dir / f"{grid_id}.tif"
-        
+        # Save TIFF
+        tiff_path = output_dir / f"{grid_id}.tif"
         with rasterio.open(
-            output_path,
+            tiff_path,
             'w',
             driver='GTiff',
             height=grid.shape[0],
@@ -69,6 +71,21 @@ class TerrainAnalyzer:
             dtype=grid.dtype
         ) as dst:
             dst.write(grid, 1)
+        
+        # Save metrics JSON
+        json_path = output_dir / f"{grid_id}.json"
+        with open(json_path, 'w') as f:
+            json.dump({
+                'grid_id': grid_id,
+                'metrics': {
+                    'fractal_dimension': metrics['fractal_dimension'],
+                    'r_squared': metrics['r_squared'],
+                    'mean_elevation': float(metrics['mean_elevation']),
+                    'std_elevation': float(metrics['std_elevation']),
+                    'position': metrics['position'],
+                    'size': metrics['size']
+                }
+            }, f, indent=2)
     
     def analyze(self, data_source: Union[str, Path]) -> Generator[Dict, None, None]:
         """Analyze terrain features in chunks"""
