@@ -1,19 +1,31 @@
+# XenArch - Terrain Anomaly Detection
 
-Input:
-- User passes in file (or just selects website)
-- Criteria for weirdness?
+A tool for analyzing terrain data to identify regions of interest using fractal analysis and other metrics.
 
-Output:
-- Highlight regions of interest
-- Compute metrics for regions of interest (how weird are they?)
-- Other metrics?
+## Current Implementation
 
+### Input
+- GeoTIFF terrain data
+- Configurable grid size and processing parameters
 
-Optional:
-- Have llm describe what about the terrain looks strange
-- Highlight list of potential features for followup
+### Processing Pipeline
+1. **Chunked Processing**
+   - Processes large terrain files in manageable chunks
+   - Adaptive grid sizing based on terrain dimensions
+   - Overlapping grids for continuous analysis
 
-Phase 1:
-- Grid Search
-- Fractality measure
+2. **Fractal Analysis**
+   - Box-counting method for fractal dimension calculation
+   - Adaptive thresholding for terrain variation
+   - R-squared validation for fit quality
+
+3. **Output Organization**
+   - Processed grid slices saved as individual TIFFs
+   - Corresponding metrics stored in JSON files
+   - Unique grid IDs for easy cross-referencing
+   - Summary statistics for each chunk
+
+### Output Structure
+
+python -m xenarch_mk2.main -f input.tif -o metrics.csv --grid-size 512 -v
 
