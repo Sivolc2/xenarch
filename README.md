@@ -94,13 +94,13 @@ Each JSON contains:
 ## Usage
 
 ### Split Dataset
-python scripts/split_terrain.py -i ./xenarch_mk2/data/Lunar_LRO_LROC-WAC_Mosaic_global_100m_June2013.tif -o ./data/grids --cpu-fraction 0.8
+`python scripts/split_terrain.py -i ./xenarch_mk2/data/Lunar_LRO_LROC-WAC_Mosaic_global_100m_June2013.tif -o ./data/grids --cpu-fraction 0.8`
 
 ### Compute Metrics
-python scripts/generate_metrics.py -i ./data/grids -v
+`python scripts/generate_metrics.py -i ./data/grids -v`
 
 ### Analyze Results
-python scripts/analyze_results.py -i ./data/grids --fd-range 0.2 0.6 --r2-min 0.9 --cpu-fraction 0.8
+`python scripts/analyze_results.py -i ./data/grids --fd-range 0.2 0.6 --r2-min 0.9 --cpu-fraction 0.8`
 
 ### Parameters
 - `-f, --file`: Input terrain file (GeoTIFF)
