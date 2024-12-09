@@ -9,6 +9,7 @@ from typing import Dict, List, Tuple
 import seaborn as sns
 import multiprocessing
 import os
+from tqdm import tqdm
 
 def get_cpu_count(max_fraction=0.5):
     """Get number of CPUs to use (default: half of available)"""
@@ -18,7 +19,8 @@ def get_cpu_count(max_fraction=0.5):
 def load_metrics(input_dir: Path) -> List[Dict]:
     """Load all JSON metrics from directory"""
     metrics = []
-    for json_file in input_dir.glob("*.json"):
+    json_files = list(input_dir.glob("*.json"))
+    for json_file in tqdm(json_files, desc="Loading metrics", unit="file"):
         with open(json_file, 'r') as f:
             metrics.append(json.load(f))
     return metrics
@@ -45,7 +47,8 @@ def plot_histogram_comparison(all_metrics: List[Dict],
                             metric_name: str,
                             title: str = None):
     """Plot histogram with filtered values highlighted"""
-    plt.figure(figsize=(10, 6))
+    # Increase figure height slightly to accommodate legend below
+    plt.figure(figsize=(10, 7))
     
     # Get values
     all_values = [m['metrics'][metric_name] for m in all_metrics]
@@ -58,13 +61,23 @@ def plot_histogram_comparison(all_metrics: List[Dict],
     plt.xlabel(metric_name.replace('_', ' ').title())
     plt.ylabel('Count')
     plt.title(title or f'Distribution of {metric_name}')
-    plt.legend()
+    
+    # Place legend below the plot
+    plt.legend(bbox_to_anchor=(0.5, -0.15), 
+              loc='upper center', 
+              ncol=2,  # Place legend items side by side
+              borderaxespad=0.)
+    
     plt.grid(True, alpha=0.3)
+    
+    # Adjust layout to prevent legend cutoff
+    plt.tight_layout()
 
 def plot_grid_samples(filtered_metrics: List[Dict], 
                      input_dir: Path,
-                     max_samples: int = 16):
-    """Plot grid of filtered TIFF samples"""
+                     max_samples: int = 16,
+                     max_tiff_files: int = 10):
+    """Plot grid of filtered TIFF samples, capped at max_tiff_files"""
     n_samples = min(len(filtered_metrics), max_samples)
     if n_samples == 0:
         return
@@ -76,18 +89,25 @@ def plot_grid_samples(filtered_metrics: List[Dict],
     fig = plt.figure(figsize=(15, 15))
     gs = GridSpec(n_rows, n_cols, figure=fig)
     
-    # Find global min/max for consistent scaling
+    # Find global min/max for consistent scaling with progress
     all_values = []
-    for metric in filtered_metrics[:max_samples]:
+    tiff_count = 0
+    for metric in tqdm(filtered_metrics[:max_samples], desc="Loading samples", unit="file"):
+        if tiff_count >= max_tiff_files:
+            break
         tiff_path = input_dir / f"{metric['grid_id']}.tif"
         if tiff_path.exists():
             with rasterio.open(tiff_path) as src:
                 data = src.read(1)
                 all_values.extend(data.flatten())
+            tiff_count += 1
     
     vmin, vmax = np.percentile(all_values, [2, 98])  # Use percentiles to avoid outliers
     
+    tiff_count = 0  # Reset counter for plotting
     for idx, metric in enumerate(filtered_metrics[:max_samples]):
+        if tiff_count >= max_tiff_files:  # Check if limit is reached
+            break
         row = idx // n_cols
         col = idx % n_cols
         
@@ -107,6 +127,7 @@ def plot_grid_samples(filtered_metrics: List[Dict],
             ax.set_title(f"FD: {metric['metrics']['fractal_dimension']:.3f}\n"
                         f"R²: {metric['metrics']['r_squared']:.3f}")
             ax.axis('off')
+            tiff_count += 1  # Increment counter
     
     # Add colorbar
     plt.colorbar(im, ax=fig.axes, label='Elevation', orientation='horizontal', 

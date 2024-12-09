@@ -9,3 +9,5 @@
 *.tif
 *.png
 *.jpg
+
+.DS_Store

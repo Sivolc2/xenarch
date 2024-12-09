@@ -9,13 +9,15 @@ def main():
                       help='Input directory containing TIFF files')
     parser.add_argument('-v', '--verbose', action='store_true',
                       help='Enable verbose output')
+    parser.add_argument('--cpu-fraction', type=float, default=0.8,
+                      help='Fraction of CPUs to use (default: 0.8)')
     
     args = parser.parse_args()
     
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO)
     
     generator = MetricsGenerator()
-    generator.process_directory(Path(args.input_dir))
+    generator.process_directory(Path(args.input_dir), cpu_fraction=args.cpu_fraction)
 
 if __name__ == '__main__':
     main() 

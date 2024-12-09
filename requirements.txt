@@ -3,3 +3,4 @@ rasterio
 scipy
 tifffile
 seaborn
+tqdm
