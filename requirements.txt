@@ -1,8 +1,5 @@
 numpy
-matplotlib
-pillow
-scikit-image
-pandas
 rasterio
-scipy 
+scipy
 tifffile
+seaborn
