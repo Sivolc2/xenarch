@@ -40,6 +40,75 @@ Each JSON contains:
 - Position information
 - Grid size
 
+## Usage
+
+XenArch now provides a unified command-line interface through `main.py` that supports running the complete pipeline or individual components.
+
+### Complete Pipeline
+Run the entire analysis pipeline in one command:
+```bash
+python main.py complete -i terrain.tif -o output_dir [options]
+```
+
+Options:
+- `--grid-size`: Size of grid cells (default: 512)
+- `--overlap`: Overlap between grids (default: 64)
+- `--fd-min`: Minimum fractal dimension (default: 0.0)
+- `--fd-max`: Maximum fractal dimension (default: 0.8)
+- `--r2-min`: Minimum R-squared value (default: 0.8)
+- `--max-samples`: Maximum samples to display (default: 16)
+- `--plot-output`: Output directory for plots
+- `--cpu-fraction`: CPU usage fraction (default: 0.8)
+- `-v, --verbose`: Enable verbose output
+
+### Individual Components
+
+#### 1. Split Terrain
+Split terrain file into analysis grids:
+```bash
+python main.py split -i terrain.tif -o output_dir [options]
+```
+
+Options:
+- `--grid-size`: Size of grid cells
+- `--overlap`: Overlap between grids
+- `--cpu-fraction`: CPU usage fraction
+- `-v, --verbose`: Enable verbose output
+
+#### 2. Generate Metrics
+Generate metrics for existing grid files:
+```bash
+python main.py metrics -i split_dir [options]
+```
+
+Options:
+- `--cpu-fraction`: CPU usage fraction
+- `-v, --verbose`: Enable verbose output
+
+#### 3. Analyze Results
+Analyze and visualize the results:
+```bash
+python main.py analyze -i metrics_dir [options]
+```
+
+Options:
+- `--fd-min`: Minimum fractal dimension
+- `--fd-max`: Maximum fractal dimension
+- `--r2-min`: Minimum R-squared value
+- `--max-samples`: Maximum samples to display
+- `--plot-output`: Output directory for plots
+- `--cpu-fraction`: CPU usage fraction
+- `-v, --verbose`: Enable verbose output
+
+## Dependencies
+- numpy
+- matplotlib
+- rasterio
+- scipy
+- pandas
+- seaborn
+- tqdm
+
 ## Next Steps
 
 ### Phase 2: Enhanced Analysis
@@ -90,28 +159,3 @@ Each JSON contains:
    - Web interface for visualization
    - API for external integration
    - Configuration management system
-
-## Usage
-
-### Split Dataset
-`python scripts/split_terrain.py -i ./xenarch_mk2/data/Lunar_LRO_LROC-WAC_Mosaic_global_100m_June2013.tif -o ./data/grids --cpu-fraction 0.8`
-
-### Compute Metrics
-`python scripts/generate_metrics.py -i ./data/grids -v`
-
-### Analyze Results
-`python scripts/analyze_results.py -i ./data/grids --fd-range 0.2 0.6 --r2-min 0.9 --cpu-fraction 0.8`
-
-### Parameters
-- `-f, --file`: Input terrain file (GeoTIFF)
-- `-d, --data-dir`: Data directory
-- `--grid-size`: Size of analysis grid cells
-- `-v, --verbose`: Enable verbose output
-- `-o, --output`: Output path for metrics
-
-## Dependencies
-- numpy
-- matplotlib
-- rasterio
-- scipy
-- pandas
