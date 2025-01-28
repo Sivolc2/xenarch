@@ -100,6 +100,86 @@ Options:
 - `--cpu-fraction`: CPU usage fraction
 - `-v, --verbose`: Enable verbose output
 
+## Example Workflows
+
+### Basic Analysis
+Process the Lunar Reconnaissance Orbiter (LRO) data with default parameters:
+```bash
+# Run the complete pipeline with defaults
+python main.py complete \
+    -i ./scripts/processed_data/Lunar_LRO_LROC-WAC_Mosaic_global_100m_June2013_sample10.tif \
+    -o ./results/lunar_analysis \
+    -v
+
+# The above command is equivalent to running these steps separately:
+python main.py split \
+    -i ./scripts/processed_data/Lunar_LRO_LROC-WAC_Mosaic_global_100m_June2013_sample10.tif \
+    -o ./results/lunar_analysis/grids \
+    -v
+python main.py metrics -i ./results/lunar_analysis/grids -v
+python main.py analyze -i ./results/lunar_analysis/grids --plot-output ./results/lunar_analysis/plots -v
+```
+
+### High-Resolution Analysis
+For detailed analysis of the lunar terrain data:
+```bash
+python main.py complete \
+    -i ./scripts/processed_data/Lunar_LRO_LROC-WAC_Mosaic_global_100m_June2013_sample10.tif \
+    -o ./results/lunar_detailed \
+    --grid-size 1024 \
+    --overlap 128 \
+    --fd-min 0.1 \
+    --fd-max 0.9 \
+    --r2-min 0.95 \
+    --max-samples 25 \
+    --cpu-fraction 0.9 \
+    -v
+```
+
+### Resource-Constrained Processing
+For processing on machines with limited resources:
+```bash
+# Split the terrain with smaller grids
+python main.py split \
+    -i ./scripts/processed_data/Lunar_LRO_LROC-WAC_Mosaic_global_100m_June2013_sample10.tif \
+    -o ./results/lunar_lowres/grids \
+    --grid-size 256 \
+    --overlap 32 \
+    --cpu-fraction 0.5
+
+# Generate metrics with lower CPU usage
+python main.py metrics \
+    -i ./results/lunar_lowres/grids \
+    --cpu-fraction 0.4
+
+# Analyze with stricter filtering
+python main.py analyze \
+    -i ./results/lunar_lowres/grids \
+    --fd-min 0.3 \
+    --fd-max 0.7 \
+    --r2-min 0.85 \
+    --max-samples 9 \
+    --plot-output ./results/lunar_lowres/plots
+```
+
+### Batch Processing
+Example shell script for processing multiple terrain files (when you have more samples):
+```bash
+#!/bin/bash
+for terrain in ./scripts/processed_data/*.tif; do
+    filename=$(basename "$terrain" .tif)
+    python main.py complete \
+        -i "$terrain" \
+        -o "./results/${filename}" \
+        --grid-size 512 \
+        --overlap 64 \
+        --fd-min 0.2 \
+        --fd-max 0.8 \
+        --plot-output "./results/${filename}/plots" \
+        -v
+done
+```
+
 ## Dependencies
 - numpy
 - matplotlib
