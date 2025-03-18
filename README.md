@@ -126,7 +126,7 @@ For detailed analysis of the lunar terrain data:
 python main.py complete \
     -i ./scripts/processed_data/Lunar_LRO_LROC-WAC_Mosaic_global_100m_June2013_sample10.tif \
     -o ./results/lunar_detailed \
-    --grid-size 1024 \
+    --grid-size 4048 \
     --overlap 128 \
     --fd-min 0.1 \
     --fd-max 0.9 \
