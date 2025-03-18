@@ -51,19 +51,27 @@ def analyze_results(input_dir: Path, args) -> None:
     # Import here to avoid loading visualization dependencies unless needed
     from scripts.analyze_results import main as analyze_main
     
-    sys.argv = [
-        'analyze_results.py',
-        '-i', str(input_dir),
-        '--fd-range', str(args.fd_min), str(args.fd_max),
-        '--r2-min', str(args.r2_min),
-        '--max-samples', str(args.max_samples),
-        '--cpu-fraction', str(args.cpu_fraction)
-    ]
-    
-    if args.plot_output:
-        sys.argv.extend(['-o', args.plot_output])
-    
-    analyze_main()
+    try:
+        sys.argv = [
+            'analyze_results.py',
+            '-i', str(input_dir),
+            '--fd-range', str(args.fd_min), str(args.fd_max),
+            '--r2-min', str(args.r2_min),
+            '--max-samples', str(args.max_samples),
+            '--cpu-fraction', str(args.cpu_fraction)
+        ]
+        
+        if args.plot_output:
+            sys.argv.extend(['-o', args.plot_output])
+        
+        analyze_main()
+    except KeyError as e:
+        logging.error(f"Error in analyze_results - missing key: {str(e)}")
+        logging.info("This is likely due to an inconsistent JSON structure. Continuing with partial results.")
+    except Exception as e:
+        logging.error(f"Error in analyze_results: {str(e)}")
+        if getattr(args, 'verbose', False):
+            logging.exception("Detailed error trace:")
 
 def main():
     parser = argparse.ArgumentParser(

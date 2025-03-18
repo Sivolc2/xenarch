@@ -33,6 +33,11 @@ def filter_metrics(metrics: List[Dict],
     filtered = []
     for metric in metrics:
         meets_conditions = True
+        
+        # Skip metrics without the required keys
+        if 'metrics' not in metric:
+            continue
+            
         for key, (min_val, max_val) in conditions.items():
             value = metric['metrics'].get(key)
             if value is None or not (min_val <= value <= max_val):
