@@ -110,17 +110,32 @@ function App() {
   useEffect(() => {
     const checkApiHealth = async () => {
       try {
+        console.log('Starting API health check');
         const isHealthy = await ApiService.checkHealth();
         if (!isHealthy) {
           console.warn('API health check failed. The backend may not be running.');
-          setApiError('Warning: The analysis backend might not be running.');
+          setApiError('Warning: The analysis backend might not be running. ' + 
+                     'This might be normal during initial deployment or cold starts.');
+          
+          // Try again in 3 seconds - sometimes serverless functions take time to wake up
+          setTimeout(() => {
+            console.log('Retrying API health check after delay');
+            checkApiHealth();
+          }, 3000);
         } else {
           console.log('API health check passed');
           setApiError(null);
         }
       } catch (error) {
         console.error('Error checking API health:', error);
-        setApiError('Error: Cannot connect to the analysis backend.');
+        setApiError('Error: Cannot connect to the analysis backend. ' +
+                   'This might be normal during initial deployment or cold starts.');
+        
+        // Try again in 3 seconds
+        setTimeout(() => {
+          console.log('Retrying API health check after error');
+          checkApiHealth();
+        }, 3000);
       }
     };
 

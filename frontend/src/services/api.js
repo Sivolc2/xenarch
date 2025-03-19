@@ -11,8 +11,13 @@ const ApiService = {
    */
   checkHealth: async () => {
     try {
+      console.log('Checking API health at:', `${CONFIG.API.BASE_URL}${CONFIG.API.HEALTH}`);
       const response = await fetch(`${CONFIG.API.BASE_URL}${CONFIG.API.HEALTH}`);
-      return response.ok;
+      if (!response.ok) {
+        console.warn('API health check failed with status:', response.status);
+        return false;
+      }
+      return true;
     } catch (error) {
       console.error('API health check error:', error);
       return false;
@@ -25,33 +30,42 @@ const ApiService = {
    * @returns {Promise<Object>} Response data with job ID
    */
   uploadFile: async (formData) => {
-    const response = await fetch(`${CONFIG.API.BASE_URL}${CONFIG.API.UPLOAD}`, {
-      method: 'POST',
-      body: formData,
-    });
-
-    const text = await response.text();
-    
+    console.log('Uploading file to:', `${CONFIG.API.BASE_URL}${CONFIG.API.UPLOAD}`);
     try {
-      // Try to parse as JSON
-      const data = JSON.parse(text);
+      const response = await fetch(`${CONFIG.API.BASE_URL}${CONFIG.API.UPLOAD}`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      console.log('Upload response status:', response.status);
+      const text = await response.text();
+      console.log('Upload response text:', text);
       
-      if (!response.ok) {
-        throw new Error(data.message || 'Error uploading file');
-      }
-      
-      return data;
-    } catch (jsonError) {
-      // If not valid JSON, check if there are success indicators in the raw response
-      if (text.includes('success') || text.includes('job_id') || text.includes('id')) {
-        // Try to extract a job ID
-        const idMatch = text.match(/['"]([\w\d-]{8,})['"]/);
-        if (idMatch && idMatch[1]) {
-          return { job_id: idMatch[1], raw_response: text };
+      try {
+        // Try to parse as JSON
+        const data = JSON.parse(text);
+        
+        if (!response.ok) {
+          throw new Error(data.message || 'Error uploading file');
         }
+        
+        return data;
+      } catch (jsonError) {
+        console.error('JSON parsing error:', jsonError);
+        // If not valid JSON, check if there are success indicators in the raw response
+        if (text.includes('success') || text.includes('job_id') || text.includes('id')) {
+          // Try to extract a job ID
+          const idMatch = text.match(/['"]([\w\d-]{8,})['"]/);
+          if (idMatch && idMatch[1]) {
+            return { job_id: idMatch[1], raw_response: text };
+          }
+        }
+        
+        throw new Error('Invalid response from server');
       }
-      
-      throw new Error('Invalid response from server');
+    } catch (error) {
+      console.error('Upload network error:', error);
+      throw error;
     }
   },
 

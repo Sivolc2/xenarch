@@ -238,3 +238,5 @@ __pycache__/
 .Python
 backend/logs/app.log
 .vercel
+
+backend/venv/
