@@ -10,6 +10,7 @@ from io import BytesIO
 import subprocess
 from datetime import datetime
 from typing import Dict, List, Any
+from dotenv import load_dotenv
 
 from flask import Flask, request, jsonify, send_file, send_from_directory
 from flask_cors import CORS
@@ -18,6 +19,9 @@ import numpy as np
 import rasterio
 from PIL import Image
 
+# Load environment variables from .env file
+load_dotenv()
+
 # Add the current directory to sys.path if not already there
 current_dir = os.path.dirname(os.path.abspath(__file__))
 if current_dir not in sys.path:
@@ -25,9 +29,9 @@ if current_dir not in sys.path:
 
 # Configuration
 BASE_DIR = Path(os.path.dirname(os.path.abspath(__file__)))
-UPLOAD_FOLDER = BASE_DIR / '../uploads'
-RESULTS_FOLDER = BASE_DIR / '../analysis_results'
-LOGS_DIR = BASE_DIR / 'logs'
+UPLOAD_FOLDER = Path(os.environ.get('UPLOAD_FOLDER', BASE_DIR / '../uploads'))
+RESULTS_FOLDER = Path(os.environ.get('RESULTS_FOLDER', BASE_DIR / '../analysis_results'))
+LOGS_DIR = Path(os.environ.get('LOGS_DIR', BASE_DIR / 'logs'))
 ALLOWED_EXTENSIONS = {'tif', 'tiff'}
 
 # Create required directories if they don't exist
@@ -37,7 +41,7 @@ os.makedirs(LOGS_DIR, exist_ok=True)
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.INFO if os.environ.get('FLASK_ENV') != 'production' else logging.ERROR,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
         logging.FileHandler(LOGS_DIR / "app.log"),
@@ -49,18 +53,18 @@ logger = logging.getLogger(__name__)
 # Initialize Flask app
 app = Flask(__name__)
 
-# Configure CORS with more specific settings
-# Allow requests from all origins that the frontend might be served from
-CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
+# Configure CORS
+allowed_origins = os.environ.get('ALLOWED_ORIGINS', '*')
+CORS(app, resources={r"/api/*": {"origins": allowed_origins}}, supports_credentials=True)
 
 app.config['UPLOAD_FOLDER'] = str(UPLOAD_FOLDER)
 app.config['RESULTS_FOLDER'] = str(RESULTS_FOLDER)
-app.config['MAX_CONTENT_LENGTH'] = 32 * 1024 * 1024  # 32MB max upload size
+app.config['MAX_CONTENT_LENGTH'] = int(os.environ.get('MAX_UPLOAD_SIZE', 32 * 1024 * 1024))  # Default 32MB
 
 # Add CORS headers to all responses
 @app.after_request
 def after_request(response):
-    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Origin', allowed_origins)
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
     return response
@@ -384,5 +388,11 @@ def get_raw_tif(job_id, grid_id):
 
 
 if __name__ == '__main__':
-    # For development only - using the basic stat reloader instead of watchdog
-    app.run(debug=True, host='0.0.0.0', port=5001, use_reloader=True, reloader_type='stat') 
+    # In production, this should be run with gunicorn instead
+    is_prod = os.environ.get('FLASK_ENV') == 'production'
+    debug = not is_prod
+    host = os.environ.get('HOST', '0.0.0.0' if is_prod else '127.0.0.1')
+    port = int(os.environ.get('PORT', 5001))
+    
+    logger.info(f"Starting Flask app with: host={host}, port={port}, debug={debug}")
+    app.run(host=host, port=port, debug=debug) 

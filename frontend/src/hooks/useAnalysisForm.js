@@ -155,11 +155,11 @@ const useAnalysisForm = ({ onUploadStart, onUploadSuccess, onUploadError }) => {
     fdMax, 
     r2Min, 
     maxSamples, 
-    cpuFraction, 
-    onUploadStart, 
-    onUploadSuccess, 
-    onUploadError,
-    validateForm
+    cpuFraction,
+    validateForm,
+    handleUploadStart,
+    handleUploadSuccess,
+    handleUploadError
   ]);
   
   return {

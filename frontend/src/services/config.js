@@ -3,11 +3,27 @@
  * This file contains configuration settings for the XenArch frontend application.
  */
 
+// Determine if we're in production based on environment variable or hostname
+const isProduction = process.env.NODE_ENV === 'production' || 
+    window.location.hostname !== 'localhost';
+
+// Base URL configuration for different environments
+const getBaseUrl = () => {
+    if (isProduction) {
+        // In production, API requests are relative to the current domain
+        // This works with the nginx configuration that proxies /api requests
+        return '/api';
+    } else {
+        // In development, connect to local backend server
+        return 'http://localhost:5001/api';
+    }
+};
+
 const CONFIG = {
     // API endpoints
     API: {
-        // Base URL for the API - change this based on your deployment
-        BASE_URL: 'http://localhost:5001/api',
+        // Base URL for the API - changes based on environment
+        BASE_URL: getBaseUrl(),
         
         // Health check endpoint
         HEALTH: '/health',

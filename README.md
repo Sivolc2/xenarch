@@ -32,7 +32,7 @@ xenarch/
 │   └── README.md           # Backend documentation
 ├── uploads/                # Uploaded terrain files (created at runtime)
 ├── analysis_results/       # Analysis results (created at runtime)
-├── buildguide.txt          # Project build guide
+├── deployment.md           # Deployment guide
 └── README.md               # Project documentation
 ```
 
@@ -119,6 +119,23 @@ python cli.py metrics -i split_dir
 # Analyze existing metrics
 python cli.py analyze -i metrics_dir
 ```
+
+## Production Deployment
+
+For production deployment, refer to the detailed deployment guide in [deployment.md](deployment.md). Key steps include:
+
+1. Setting up a server (e.g., Digital Ocean droplet)
+2. Configuring Nginx as a reverse proxy
+3. Running the backend with Gunicorn
+4. Configuring environment variables for production
+5. Setting up SSL for secure connections
+
+To deploy in production mode:
+
+1. Set the environment variables in `.env.production`
+2. Build the React frontend if applicable
+3. Set up Nginx using the provided configuration
+4. Use Supervisor to manage the Gunicorn process
 
 ## Development
 

@@ -237,3 +237,8 @@ __pycache__/
 *.so
 .Python
 backend/logs/app.log
+
+
+.DS_Store
+
+backend/venv/
