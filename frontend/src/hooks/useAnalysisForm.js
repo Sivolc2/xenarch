@@ -82,17 +82,17 @@ const useAnalysisForm = ({ onUploadStart, onUploadSuccess, onUploadError }) => {
   /**
    * onUploadStart handler function
    */
-  const handleUploadStart = () => {
+  const handleUploadStart = useCallback(() => {
     setIsSubmitting(true);
     setFormError(null);
     if (onUploadStart) onUploadStart();
-  };
+  }, [onUploadStart]);
   
   /**
    * onUploadSuccess handler function
    * @param {Object} response - Response from the server
    */
-  const handleUploadSuccess = (response) => {
+  const handleUploadSuccess = useCallback((response) => {
     setIsSubmitting(false);
     
     // Log the successful response
@@ -103,18 +103,18 @@ const useAnalysisForm = ({ onUploadStart, onUploadSuccess, onUploadError }) => {
     
     // Call the provided callback
     if (onUploadSuccess) onUploadSuccess(response, fileSize);
-  };
+  }, [onUploadSuccess, fileInput]);
   
   /**
    * onUploadError handler function
    * @param {Error} error - Error object
    */
-  const handleUploadError = (error) => {
+  const handleUploadError = useCallback((error) => {
     console.error('Upload error:', error);
     setIsSubmitting(false);
     setFormError(`Error: ${error.message}`);
     if (onUploadError) onUploadError(error);
-  };
+  }, [onUploadError]);
   
   /**
    * Submit the form data to the API
@@ -156,10 +156,10 @@ const useAnalysisForm = ({ onUploadStart, onUploadSuccess, onUploadError }) => {
     r2Min, 
     maxSamples, 
     cpuFraction, 
-    onUploadStart, 
-    onUploadSuccess, 
-    onUploadError,
-    validateForm
+    validateForm,
+    handleUploadStart,
+    handleUploadSuccess,
+    handleUploadError
   ]);
   
   return {
