@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Alert } from 'react-bootstrap';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Container, Row, Col, Alert, Button } from 'react-bootstrap';
 import './styles/App.css';
 
 // Import components
@@ -18,6 +18,7 @@ function App() {
   // State to control which view is active
   const [showResults, setShowResults] = useState(false);
   const [apiError, setApiError] = useState(null);
+  const [isStuck, setIsStuck] = useState(false);
 
   // Initialize job status hook
   const jobStatus = useJobStatus({
@@ -30,10 +31,44 @@ function App() {
         // Use setTimeout to ensure this happens after state updates
         setTimeout(() => {
           setShowResults(true);
-        }, 200);
+          setIsStuck(false);
+        }, 250);
       }
     },
   });
+
+  // Check if processing is taking too long
+  useEffect(() => {
+    let stuckTimer = null;
+    
+    if (jobStatus.status === 'processing') {
+      stuckTimer = setTimeout(() => {
+        // If still processing after 60 seconds, might be stuck
+        if (jobStatus.status === 'processing') {
+          console.log('Processing seems stuck - showing override button');
+          setIsStuck(true);
+        }
+      }, 60000); // 60 seconds timeout
+    } else {
+      setIsStuck(false);
+    }
+    
+    return () => {
+      if (stuckTimer) clearTimeout(stuckTimer);
+    };
+  }, [jobStatus.status]);
+
+  // Force transition to results
+  const forceShowResults = useCallback(() => {
+    console.log('Manually forcing transition to results view');
+    
+    if (jobStatus.jobId && !jobStatus.results) {
+      // Try to fetch results manually
+      jobStatus.fetchResults(jobStatus.jobId);
+    } else if (jobStatus.results) {
+      setShowResults(true);
+    }
+  }, [jobStatus]);
 
   // Monitor status changes
   useEffect(() => {
@@ -42,6 +77,7 @@ function App() {
     if (jobStatus.status === 'complete' && jobStatus.results) {
       console.log('Setting showResults to true from status effect');
       setShowResults(true);
+      setIsStuck(false);
     }
     
     if (jobStatus.status === 'error') {
@@ -56,6 +92,7 @@ function App() {
       console.log('Upload starting, hiding results');
       setShowResults(false);
       setApiError(null);
+      setIsStuck(false);
       jobStatus.resetJob();
     },
     onUploadSuccess: (response, fileSize) => {
@@ -98,10 +135,8 @@ function App() {
 
   // Force-toggle view for debugging if needed
   const debugToggleView = () => {
-    if (process.env.NODE_ENV === 'development') {
-      setShowResults(prev => !prev);
-      console.log('Debug: Manually toggled view');
-    }
+    console.log('Debug: Manually toggled view');
+    setShowResults(prev => !prev);
   };
 
   // Determine which component to display in the right column
@@ -111,7 +146,27 @@ function App() {
       return <ResultsCard results={jobStatus.results} visible={true} />;
     } else if (jobStatus.status !== 'idle') {
       console.log('Rendering ProcessingStatusCard');
-      return <ProcessingStatusCard jobStatus={jobStatus} visible={true} />;
+      return (
+        <>
+          <ProcessingStatusCard jobStatus={jobStatus} visible={true} />
+          
+          {/* Show override button if processing seems stuck */}
+          {isStuck && (
+            <div className="text-center mt-3">
+              <Alert variant="warning">
+                Processing seems to be taking longer than expected
+              </Alert>
+              <Button 
+                variant="warning" 
+                onClick={forceShowResults}
+                className="mt-2"
+              >
+                View results anyway
+              </Button>
+            </div>
+          )}
+        </>
+      );
     } else {
       console.log('Rendering default message');
       return (
@@ -146,6 +201,28 @@ function App() {
                 form={form} 
                 disabled={jobStatus.status === 'processing'} 
               />
+              
+              {/* Debug controls in development */}
+              {process.env.NODE_ENV === 'development' && (
+                <div className="mt-3 p-2 border rounded">
+                  <small className="text-muted d-block mb-2">Debug Controls:</small>
+                  <Button 
+                    size="sm" 
+                    variant="outline-secondary" 
+                    onClick={debugToggleView}
+                    className="me-2"
+                  >
+                    Toggle View
+                  </Button>
+                  <Button 
+                    size="sm" 
+                    variant="outline-danger" 
+                    onClick={forceShowResults}
+                  >
+                    Force Results
+                  </Button>
+                </div>
+              )}
             </Col>
 
             {/* Right Column - Use the function to determine what to show */}

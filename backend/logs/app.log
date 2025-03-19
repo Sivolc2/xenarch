@@ -868,3 +868,45 @@ ModuleNotFoundError: No module named 'analyze_results'
 2025-03-19 00:28:09,439 - __main__ - INFO - Running command: python /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/cli.py complete -i /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/../uploads/6eea44c2-7269-4528-b800-ffff053c8094/at3_1m4_01.tif -o /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/../analysis_results/6eea44c2-7269-4528-b800-ffff053c8094 --grid-size 512 --overlap 64 --fd-min 0 --fd-max 0.8 --r2-min 0.8 --max-samples 16 --cpu-fraction 0.8 --plot-output /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/../analysis_results/6eea44c2-7269-4528-b800-ffff053c8094 -v
 2025-03-19 00:28:12,649 - __main__ - INFO - Command completed successfully: 
 2025-03-19 00:28:12,650 - werkzeug - INFO - 127.0.0.1 - - [19/Mar/2025 00:28:12] "POST /api/upload HTTP/1.1" 200 -
+2025-03-19 00:29:22,917 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-19 00:29:22,920 - werkzeug - WARNING -  * Debugger is active!
+2025-03-19 00:29:22,932 - werkzeug - INFO -  * Debugger PIN: 551-761-828
+2025-03-19 00:29:33,779 - werkzeug - INFO - 127.0.0.1 - - [19/Mar/2025 00:29:33] "GET /api/health HTTP/1.1" 200 -
+2025-03-19 00:29:33,781 - werkzeug - INFO - 127.0.0.1 - - [19/Mar/2025 00:29:33] "GET /api/health HTTP/1.1" 200 -
+2025-03-19 00:29:36,066 - werkzeug - INFO - 127.0.0.1 - - [19/Mar/2025 00:29:36] "GET /api/health HTTP/1.1" 200 -
+2025-03-19 00:29:36,068 - werkzeug - INFO - 127.0.0.1 - - [19/Mar/2025 00:29:36] "GET /api/health HTTP/1.1" 200 -
+2025-03-19 00:29:58,508 - __main__ - INFO - Received file upload request
+2025-03-19 00:29:58,516 - __main__ - INFO - File saved to /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/../uploads/8a7cfc56-1202-41c8-8736-6cc063b9afc4/at3_1m4_01.tif
+2025-03-19 00:29:58,517 - __main__ - INFO - Running command: python /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/cli.py complete -i /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/../uploads/8a7cfc56-1202-41c8-8736-6cc063b9afc4/at3_1m4_01.tif -o /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/../analysis_results/8a7cfc56-1202-41c8-8736-6cc063b9afc4 --grid-size 512 --overlap 64 --fd-min 0 --fd-max 0.8 --r2-min 0.8 --max-samples 16 --cpu-fraction 0.8 --plot-output /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/../analysis_results/8a7cfc56-1202-41c8-8736-6cc063b9afc4 -v
+2025-03-19 00:30:01,396 - __main__ - INFO - Command completed successfully: 
+2025-03-19 00:30:01,397 - werkzeug - INFO - 127.0.0.1 - - [19/Mar/2025 00:30:01] "POST /api/upload HTTP/1.1" 200 -
+2025-03-19 00:31:28,791 - werkzeug - INFO - 127.0.0.1 - - [19/Mar/2025 00:31:28] "GET /api/health HTTP/1.1" 200 -
+2025-03-19 00:31:56,697 - werkzeug - INFO - 127.0.0.1 - - [19/Mar/2025 00:31:56] "GET /api/health HTTP/1.1" 200 -
+2025-03-19 00:32:36,880 - werkzeug - INFO - 127.0.0.1 - - [19/Mar/2025 00:32:36] "GET /api/health HTTP/1.1" 200 -
+2025-03-19 00:32:36,893 - werkzeug - INFO - 127.0.0.1 - - [19/Mar/2025 00:32:36] "GET /api/health HTTP/1.1" 200 -
+2025-03-19 00:33:08,894 - werkzeug - INFO - 127.0.0.1 - - [19/Mar/2025 00:33:08] "GET /api/health HTTP/1.1" 200 -
+2025-03-19 00:33:08,898 - werkzeug - INFO - 127.0.0.1 - - [19/Mar/2025 00:33:08] "GET /api/health HTTP/1.1" 200 -
+2025-03-19 00:34:18,391 - __main__ - INFO - Received file upload request
+2025-03-19 00:34:18,406 - __main__ - INFO - File saved to /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/../uploads/1e7606d2-7d0c-4e36-baff-c1a801988054/at3_1m4_01.tif
+2025-03-19 00:34:18,407 - __main__ - INFO - Running command: python /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/cli.py complete -i /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/../uploads/1e7606d2-7d0c-4e36-baff-c1a801988054/at3_1m4_01.tif -o /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/../analysis_results/1e7606d2-7d0c-4e36-baff-c1a801988054 --grid-size 512 --overlap 64 --fd-min 0 --fd-max 0.8 --r2-min 0.8 --max-samples 16 --cpu-fraction 0.8 --plot-output /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/../analysis_results/1e7606d2-7d0c-4e36-baff-c1a801988054 -v
+2025-03-19 00:34:21,650 - __main__ - INFO - Command completed successfully: 
+2025-03-19 00:34:21,651 - werkzeug - INFO - 127.0.0.1 - - [19/Mar/2025 00:34:21] "POST /api/upload HTTP/1.1" 200 -
+2025-03-19 00:34:29,211 - werkzeug - INFO - 127.0.0.1 - - [19/Mar/2025 00:34:29] "GET /api/jobs/1e7606d2-7d0c-4e36-baff-c1a801988054/results HTTP/1.1" 200 -
+2025-03-19 00:34:29,427 - werkzeug - INFO - 127.0.0.1 - - [19/Mar/2025 00:34:29] "GET /api/jobs/1e7606d2-7d0c-4e36-baff-c1a801988054/thumbnail/grid_00000_00000 HTTP/1.1" 200 -
+2025-03-19 00:35:06,908 - werkzeug - INFO - 127.0.0.1 - - [19/Mar/2025 00:35:06] "GET /api/health HTTP/1.1" 200 -
+2025-03-19 00:35:06,916 - werkzeug - INFO - 127.0.0.1 - - [19/Mar/2025 00:35:06] "GET /api/health HTTP/1.1" 200 -
+2025-03-19 00:35:12,187 - __main__ - INFO - Received file upload request
+2025-03-19 00:35:12,238 - __main__ - INFO - File saved to /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/../uploads/836125f4-9a60-4209-8603-e9b0f7d87c21/at3_1m4_01.tif
+2025-03-19 00:35:12,238 - __main__ - INFO - Running command: python /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/cli.py complete -i /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/../uploads/836125f4-9a60-4209-8603-e9b0f7d87c21/at3_1m4_01.tif -o /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/../analysis_results/836125f4-9a60-4209-8603-e9b0f7d87c21 --grid-size 512 --overlap 64 --fd-min 0 --fd-max 0.8 --r2-min 0.8 --max-samples 16 --cpu-fraction 0.8 --plot-output /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/../analysis_results/836125f4-9a60-4209-8603-e9b0f7d87c21 -v
+2025-03-19 00:35:15,700 - __main__ - INFO - Command completed successfully: 
+2025-03-19 00:35:15,701 - werkzeug - INFO - 127.0.0.1 - - [19/Mar/2025 00:35:15] "POST /api/upload HTTP/1.1" 200 -
+2025-03-19 00:38:06,211 - werkzeug - INFO - 127.0.0.1 - - [19/Mar/2025 00:38:06] "GET /api/health HTTP/1.1" 200 -
+2025-03-19 00:38:06,213 - werkzeug - INFO - 127.0.0.1 - - [19/Mar/2025 00:38:06] "GET /api/health HTTP/1.1" 200 -
+2025-03-19 00:38:12,523 - __main__ - INFO - Received file upload request
+2025-03-19 00:38:12,544 - __main__ - INFO - File saved to /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/../uploads/94cceb6f-9de5-4f3a-81da-fb67621150a0/at3_1m4_01.tif
+2025-03-19 00:38:12,544 - __main__ - INFO - Running command: python /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/cli.py complete -i /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/../uploads/94cceb6f-9de5-4f3a-81da-fb67621150a0/at3_1m4_01.tif -o /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/../analysis_results/94cceb6f-9de5-4f3a-81da-fb67621150a0 --grid-size 512 --overlap 64 --fd-min 0 --fd-max 0.8 --r2-min 0.8 --max-samples 16 --cpu-fraction 0.8 --plot-output /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/../analysis_results/94cceb6f-9de5-4f3a-81da-fb67621150a0 -v
+2025-03-19 00:38:16,839 - __main__ - INFO - Command completed successfully: 
+2025-03-19 00:38:16,840 - werkzeug - INFO - 127.0.0.1 - - [19/Mar/2025 00:38:16] "POST /api/upload HTTP/1.1" 200 -
+2025-03-19 00:38:26,091 - werkzeug - INFO - 127.0.0.1 - - [19/Mar/2025 00:38:26] "GET /api/jobs/94cceb6f-9de5-4f3a-81da-fb67621150a0/results HTTP/1.1" 200 -
+2025-03-19 00:38:26,233 - werkzeug - INFO - 127.0.0.1 - - [19/Mar/2025 00:38:26] "GET /api/jobs/94cceb6f-9de5-4f3a-81da-fb67621150a0/thumbnail/grid_00000_00000 HTTP/1.1" 200 -
+2025-03-19 00:38:26,233 - werkzeug - INFO - 127.0.0.1 - - [19/Mar/2025 00:38:26] "GET /api/jobs/94cceb6f-9de5-4f3a-81da-fb67621150a0/thumbnail/grid_00448_00000 HTTP/1.1" 200 -

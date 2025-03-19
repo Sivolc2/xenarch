@@ -54,11 +54,69 @@ const useJobStatus = ({ initialJobId = null, autoStart = false, onComplete = nul
       setCurrentStage('results');
       setProgress(75);
       
-      const resultsData = await ApiService.getJobResults(jobId);
-      console.log('Results data received:', resultsData);
+      // Try fetching results
+      let resultsData = null;
+      try {
+        resultsData = await ApiService.getJobResults(jobId);
+        console.log('Results data received:', resultsData);
+      } catch (fetchError) {
+        console.error('Error in initial results fetch:', fetchError);
+        addDebugMessage(`Initial results fetch failed - retrying in 1 second...`);
+        
+        // Try once more after a delay
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        try {
+          resultsData = await ApiService.getJobResults(jobId);
+          console.log('Results data received on retry:', resultsData);
+        } catch (retryError) {
+          console.error('Error in retry fetch:', retryError);
+          throw new Error('Failed to fetch results after multiple attempts');
+        }
+      }
+      
+      // Handle raw response or missing structure
+      if (resultsData && typeof resultsData === 'object') {
+        // If the data is missing required structure, try to fix it
+        if (!resultsData.job_id) {
+          resultsData.job_id = jobId;
+        }
+        
+        if (!resultsData.results && resultsData.metrics) {
+          // This might be a direct metrics object, wrap it
+          resultsData = {
+            ...resultsData,
+            job_id: jobId,
+            results: [{ 
+              grid_id: 'grid_00000_00000', 
+              metrics: resultsData.metrics 
+            }]
+          };
+          console.log('Restructured results data:', resultsData);
+        }
+        
+        // For single grid result where the server returns it directly
+        if (!resultsData.results && resultsData.grid_id) {
+          resultsData = {
+            job_id: jobId,
+            results: [resultsData],
+            total_grids: 1
+          };
+          console.log('Wrapped single grid result:', resultsData);
+        }
+      } else {
+        // Create minimal valid structure if we got something else
+        addDebugMessage('Warning: Unexpected results format - creating placeholder');
+        resultsData = {
+          job_id: jobId,
+          results: [],
+          total_grids: 0,
+          status: 'success',
+          message: 'Results processed with warnings'
+        };
+      }
       
       // Add short summary of results to debug details
-      const resultsSummary = resultsData.results 
+      const resultsSummary = resultsData.results && resultsData.results.length 
         ? `Found ${resultsData.results.length} grid(s) with valid fractal dimensions.` 
         : 'No valid results found.';
       
@@ -67,23 +125,23 @@ const useJobStatus = ({ initialJobId = null, autoStart = false, onComplete = nul
       setProgress(100);
       setStatus('complete');
       setMessage('Analysis complete');
-      setResults(resultsData);
+      
+      // Store results and force a re-render
+      setResults(null); // Clear first to ensure state change is detected
+      setTimeout(() => {
+        setResults(resultsData);
+        console.log('Results state updated');
+      }, 50);
       
       console.log('Job status hook: Setting complete status and calling onComplete callback');
       addDebugMessage('Analysis complete - showing results');
       
       // Make sure onComplete is called for valid results
       if (onComplete) {
-        // Ensure resultsData is valid before calling onComplete
-        if (resultsData && resultsData.job_id) {
-          console.log('Calling onComplete with valid results');
-          setTimeout(() => {
-            onComplete(resultsData);
-          }, 100); // Small delay to ensure state updates first
-        } else {
-          console.error('Results data missing required properties:', resultsData);
-          addDebugMessage('Warning: Results data format unexpected');
-        }
+        console.log('Calling onComplete with results');
+        setTimeout(() => {
+          onComplete(resultsData);
+        }, 200); // Longer delay to ensure state updates first
       }
     } catch (error) {
       console.error('Error fetching results:', error);
@@ -109,8 +167,8 @@ const useJobStatus = ({ initialJobId = null, autoStart = false, onComplete = nul
       
       if (retryCountRef.current === 1) {
         addDebugMessage(`Starting status polling for job: ${currentJobId}`);
-      } else if (retryCountRef.current % 5 === 0) {
-        // Add message only every 5 attempts to avoid flooding the log
+      } else if (retryCountRef.current % 3 === 0) {
+        // Add message every 3 attempts instead of 5 for more frequent updates
         addDebugMessage(`Checking job status (attempt #${retryCountRef.current})`);
       }
       
@@ -147,18 +205,50 @@ const useJobStatus = ({ initialJobId = null, autoStart = false, onComplete = nul
         }
       }
       
-      // If job is complete, fetch results
-      if (statusData.status === 'complete') {
-        console.log('Job is complete, clearing interval and fetching results');
-        addDebugMessage('Server reports job is complete - retrieving results');
+      // Check for specific conditions that indicate completion
+      const isCompleteByStatus = statusData.status === 'complete';
+      const isCompleteByMessage = statusData.message && 
+        (statusData.message.toLowerCase().includes('complete') || 
+         statusData.message.toLowerCase().includes('finished'));
+      
+      // If job is complete by either condition, fetch results
+      if (isCompleteByStatus || isCompleteByMessage) {
+        console.log(`Job is complete (by ${isCompleteByStatus ? 'status' : 'message'}), clearing interval and fetching results`);
+        addDebugMessage(`Server reports job is complete - retrieving results`);
         
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+        }
+        
         setProgress(95);
         setCurrentStage('results');
         
-        // Fetch results immediately
-        fetchResults(currentJobId);
+        // For 1-grid case, add small delay before fetching results 
+        // to make sure all server processing is done
+        setTimeout(() => {
+          // Fetch results immediately
+          fetchResults(currentJobId);
+        }, 500);
+      }
+      
+      // Special case: If we've polled a few times and still not seeing completion,
+      // but we have a metric_count > 0, we should try to fetch results anyway
+      if (retryCountRef.current >= 5 && statusData.metrics_count > 0) {
+        console.log(`Job has ${statusData.metrics_count} metrics but status not complete, trying to fetch results anyway`);
+        addDebugMessage(`Found ${statusData.metrics_count} metrics - attempting to retrieve results`);
+        
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+        }
+        
+        setProgress(90);
+        setCurrentStage('results');
+        
+        setTimeout(() => {
+          fetchResults(currentJobId);
+        }, 500);
       }
     } catch (error) {
       console.error('Error polling job status:', error);
@@ -166,6 +256,14 @@ const useJobStatus = ({ initialJobId = null, autoStart = false, onComplete = nul
       
       // Even if there's an error, increment progress to show movement
       setProgress(prev => Math.min(prev + 5, 95));
+      
+      // If we've had multiple polling errors, try fetching results anyway
+      if (retryCountRef.current >= 10) {
+        addDebugMessage('Multiple polling errors - attempting to retrieve results anyway');
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+        fetchResults(currentJobId);
+      }
     }
   }, [fetchResults, message, addDebugMessage]);
   

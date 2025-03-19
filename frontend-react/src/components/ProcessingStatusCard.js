@@ -10,7 +10,6 @@ const ProcessingStatusCard = ({
   visible = false 
 }) => {
   const {
-    progress,
     currentStage,
     message,
     jobId,
