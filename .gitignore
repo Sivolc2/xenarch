@@ -237,3 +237,4 @@ __pycache__/
 *.so
 .Python
 backend/logs/app.log
+.vercel
