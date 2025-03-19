@@ -10,14 +10,11 @@ from io import BytesIO
 import subprocess
 from datetime import datetime
 from typing import Dict, List, Any
+import warnings
 from dotenv import load_dotenv
 
-from flask import Flask, request, jsonify, send_file, send_from_directory
-from flask_cors import CORS
-from werkzeug.utils import secure_filename
-import numpy as np
-import rasterio
-from PIL import Image
+# Handle deprecation warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 # Load environment variables from .env file
 load_dotenv()
@@ -26,6 +23,27 @@ load_dotenv()
 current_dir = os.path.dirname(os.path.abspath(__file__))
 if current_dir not in sys.path:
     sys.path.insert(0, current_dir)
+
+# Import Flask after environment setup
+from flask import Flask, request, jsonify, send_file, send_from_directory
+from flask_cors import CORS
+from werkzeug.utils import secure_filename
+
+# Set environment variables for scientific libraries
+# This helps with compatibility issues in Python 3.12
+os.environ["OPENBLAS_NUM_THREADS"] = "1"  # Prevent numpy/scipy threading issues
+os.environ["MKL_NUM_THREADS"] = "1"  
+
+# Now import scientific libraries
+try:
+    import numpy as np
+    import rasterio
+    from PIL import Image
+except ImportError as e:
+    print(f"Error importing scientific libraries: {e}")
+    print("Please ensure all required dependencies are installed.")
+    print("If using Python 3.12, make sure you've upgraded setuptools and wheel.")
+    sys.exit(1)
 
 # Configuration
 BASE_DIR = Path(os.path.dirname(os.path.abspath(__file__)))
@@ -49,6 +67,11 @@ logging.basicConfig(
     ]
 )
 logger = logging.getLogger(__name__)
+
+# Log Python version info
+logger.info(f"Python version: {sys.version}")
+logger.info(f"NumPy version: {np.__version__}")
+logger.info(f"Rasterio version: {rasterio.__version__}")
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -80,7 +103,11 @@ def health_check():
     """Health check endpoint to verify the API is running"""
     return jsonify({
         "status": "ok",
-        "timestamp": datetime.now().isoformat()
+        "timestamp": datetime.now().isoformat(),
+        "python_version": sys.version,
+        "numpy_version": np.__version__,
+        "rasterio_version": rasterio.__version__,
+        "pil_version": Image.__version__
     })
 
 

@@ -40,7 +40,7 @@ xenarch/
 
 ### Prerequisites
 
-- Python 3.8+
+- Python 3.8+ (compatible with Python 3.12)
 - Node.js (optional, for development)
 - GDAL dependencies for GeoTIFF processing:
   - On macOS: `brew install gdal`
@@ -59,12 +59,17 @@ xenarch/
    source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
-3. Install the required dependencies:
+3. Upgrade pip and install setuptools (critical for Python 3.12+):
+   ```bash
+   pip install --upgrade pip setuptools wheel
+   ```
+
+4. Install the required dependencies:
    ```bash
    pip install -r requirements.txt
    ```
 
-4. Start the Flask API:
+5. Start the Flask API:
    ```bash
    python app.py
    ```

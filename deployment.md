@@ -31,6 +31,9 @@ apt install -y python3-pip python3-venv nginx supervisor
 
 # Install GDAL dependencies
 apt install -y gdal-bin libgdal-dev
+
+# For Python 3.12 compatibility, ensure setuptools is installed globally
+python3 -m pip install --upgrade pip setuptools wheel
 ```
 
 ## 4. Set Up Project Structure
@@ -64,9 +67,12 @@ cd /var/www/xenarch/backend
 python3 -m venv venv
 source venv/bin/activate
 
+# Ensure pip, setuptools, and wheel are up-to-date
+# This is critical for Python 3.12 compatibility
+pip install --upgrade pip setuptools wheel
+
 # Install Python dependencies
 pip install -r requirements.txt
-pip install gunicorn
 
 # Create .env file (if needed)
 cat > .env << EOF
@@ -75,6 +81,26 @@ EOF
 
 # Deactivate virtualenv
 deactivate
+```
+
+### 6.1 Troubleshooting Python 3.12 Dependency Issues
+
+If you encounter issues with building dependencies on Python 3.12, try these steps:
+
+```bash
+# Ensure development tools are installed
+apt install -y build-essential python3-dev
+
+# Install GDAL system packages 
+apt install -y python3-gdal
+
+# For specific package build issues:
+export GDAL_CONFIG=/usr/bin/gdal-config
+pip install --no-binary :all: rasterio
+
+# If scipy has issues:
+apt install -y libatlas-base-dev gfortran
+pip install scipy --no-binary :all:
 ```
 
 ## 7. Set Up Frontend
@@ -119,6 +145,11 @@ server {
         proxy_set_header X-Real-IP \$remote_addr;
         proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto \$scheme;
+        
+        # Increase timeouts for long-running operations
+        proxy_connect_timeout 300s;
+        proxy_send_timeout 300s;
+        proxy_read_timeout 300s;
     }
 
     # Large file upload configuration
@@ -145,7 +176,7 @@ Create a supervisor configuration to keep the backend running:
 cat > /etc/supervisor/conf.d/xenarch.conf << EOF
 [program:xenarch]
 directory=/var/www/xenarch/backend
-command=/var/www/xenarch/backend/venv/bin/gunicorn -w 4 -b 127.0.0.1:5001 app:app
+command=/var/www/xenarch/backend/venv/bin/gunicorn -w 4 -b 127.0.0.1:5001 app:app --timeout 300
 user=www-data
 autostart=true
 autorestart=true
