@@ -1,0 +1,7 @@
+# Exclude files and directories from Vercel deployment
+.git
+__pycache__
+*.pyc
+uploads/
+analysis_results/
+node_modules/

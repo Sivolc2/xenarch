@@ -6,8 +6,8 @@
 const CONFIG = {
     // API endpoints
     API: {
-        // Base URL for the API - change this based on your deployment
-        BASE_URL: 'http://localhost:5001/api',
+        // Base URL for the API - using relative URL for Vercel deployment
+        BASE_URL: '/api',
         
         // Health check endpoint
         HEALTH: '/health',
