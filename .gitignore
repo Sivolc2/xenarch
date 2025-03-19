@@ -236,3 +236,4 @@ __pycache__/
 *$py.class
 *.so
 .Python
+backend/logs/app.log
