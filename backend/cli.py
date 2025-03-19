@@ -5,9 +5,20 @@ from pathlib import Path
 import logging
 from typing import Optional
 import sys
+import os
 
-from xenarch_mk2.utils.splitter import TerrainSplitter
-from xenarch_mk2.metrics.generator import MetricsGenerator
+# Add the current directory to sys.path if not already there
+current_dir = os.path.dirname(os.path.abspath(__file__))
+if current_dir not in sys.path:
+    sys.path.insert(0, current_dir)
+
+# Ensure scripts module is available
+scripts_dir = os.path.join(current_dir, 'scripts')
+if scripts_dir not in sys.path:
+    sys.path.insert(0, scripts_dir)
+
+from core.utils.splitter import TerrainSplitter
+from core.metrics.generator import MetricsGenerator
 import multiprocessing
 
 def setup_logging(verbose: bool) -> None:
@@ -48,23 +59,96 @@ def analyze_results(input_dir: Path, args) -> None:
     """Analyze and visualize results"""
     logging.info("Analyzing results...")
     
-    # Import here to avoid loading visualization dependencies unless needed
-    from scripts.analyze_results import main as analyze_main
+    # Import the necessary libraries here instead of trying to import the analyze_results module
+    import numpy as np
+    import matplotlib.pyplot as plt
+    from matplotlib.gridspec import GridSpec
+    import seaborn as sns
+    from tqdm import tqdm
+    import json
+    
+    # Function to load metrics from the JSON files
+    def load_metrics(input_dir):
+        metrics = []
+        json_files = list(input_dir.glob("*.json"))
+        for json_file in tqdm(json_files, desc="Loading metrics", unit="file"):
+            if json_file.name == 'params.json':
+                continue
+            with open(json_file, 'r') as f:
+                try:
+                    metrics.append(json.load(f))
+                except json.JSONDecodeError:
+                    logging.warning(f"Could not parse JSON file: {json_file}")
+        return metrics
+    
+    # Function to filter metrics based on conditions
+    def filter_metrics(metrics, fd_min, fd_max, r2_min):
+        filtered = []
+        for metric in metrics:
+            if 'metrics' not in metric:
+                continue
+                
+            fd = metric['metrics'].get('fractal_dimension')
+            r2 = metric['metrics'].get('r_squared')
+            
+            if (fd is not None and fd >= fd_min and fd <= fd_max and 
+                r2 is not None and r2 >= r2_min):
+                filtered.append(metric)
+        return filtered
+    
+    # Set up output directory
+    output_dir = Path(args.plot_output) if args.plot_output else input_dir
+    os.makedirs(output_dir, exist_ok=True)
     
     try:
-        sys.argv = [
-            'analyze_results.py',
-            '-i', str(input_dir),
-            '--fd-range', str(args.fd_min), str(args.fd_max),
-            '--r2-min', str(args.r2_min),
-            '--max-samples', str(args.max_samples),
-            '--cpu-fraction', str(args.cpu_fraction)
-        ]
+        # Load and filter metrics
+        all_metrics = load_metrics(input_dir)
+        logging.info(f"Loaded {len(all_metrics)} total samples")
         
-        if args.plot_output:
-            sys.argv.extend(['-o', args.plot_output])
+        filtered_metrics = filter_metrics(all_metrics, args.fd_min, args.fd_max, args.r2_min)
+        logging.info(f"Found {len(filtered_metrics)} samples meeting conditions")
         
-        analyze_main()
+        if not filtered_metrics:
+            logging.warning("No samples meet the filtering criteria")
+            return
+        
+        # Set seaborn style
+        sns.set_theme(style="whitegrid")
+        
+        # Plot histogram of fractal dimensions
+        plt.figure(figsize=(10, 7))
+        all_values = [m['metrics']['fractal_dimension'] for m in all_metrics if 'metrics' in m and 'fractal_dimension' in m['metrics']]
+        filtered_values = [m['metrics']['fractal_dimension'] for m in filtered_metrics]
+        
+        plt.hist(all_values, bins=50, alpha=0.5, label='All samples', color='blue')
+        plt.hist(filtered_values, bins=50, alpha=0.7, label='Filtered samples', color='red')
+        
+        plt.xlabel('Fractal Dimension')
+        plt.ylabel('Count')
+        plt.title('Distribution of Fractal Dimensions')
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        plt.tight_layout()
+        plt.savefig(output_dir / 'fractal_histogram.png', dpi=300, bbox_inches='tight')
+        plt.close()
+        
+        # Sort filtered metrics by fractal dimension
+        filtered_metrics.sort(key=lambda x: x['metrics']['fractal_dimension'], reverse=True)
+        
+        # Get top N samples to display
+        max_samples = min(args.max_samples, len(filtered_metrics))
+        top_metrics = filtered_metrics[:max_samples]
+        
+        # Create a summary file with the top results
+        with open(output_dir / 'filtered_results.json', 'w') as f:
+            json.dump({
+                'total_samples': len(all_metrics),
+                'filtered_samples': len(filtered_metrics),
+                'top_samples': top_metrics
+            }, f, indent=2)
+        
+        logging.info(f"Analysis complete. Results saved to {output_dir}")
+        
     except KeyError as e:
         logging.error(f"Error in analyze_results - missing key: {str(e)}")
         logging.info("This is likely due to an inconsistent JSON structure. Continuing with partial results.")
@@ -80,16 +164,16 @@ def main():
         epilog="""
 Examples:
   # Run the complete pipeline
-  python main.py complete -i terrain.tif -o output_dir
+  python cli.py complete -i terrain.tif -o output_dir
   
   # Only split terrain
-  python main.py split -i terrain.tif -o output_dir
+  python cli.py split -i terrain.tif -o output_dir
   
   # Generate metrics for existing splits
-  python main.py metrics -i split_dir
+  python cli.py metrics -i split_dir
   
   # Analyze existing metrics
-  python main.py analyze -i metrics_dir
+  python cli.py analyze -i metrics_dir
 """
     )
     

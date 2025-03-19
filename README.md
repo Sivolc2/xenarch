@@ -20,15 +20,20 @@ xenarch/
 │   ├── index.html          # Main HTML page
 │   └── README.md           # Frontend documentation
 ├── backend/                # Backend API service
-│   ├── app.py              # Flask application
+│   ├── app.py              # Flask API server
+│   ├── cli.py              # Command line interface
+│   ├── core/               # Core analysis modules
+│   │   ├── utils/          # Utility functions (e.g., terrain splitting)
+│   │   ├── metrics/        # Metrics generation (e.g., fractal dimensions)
+│   │   ├── analyzers/      # Analytical processing modules
+│   │   └── data/           # Data management utilities
+│   ├── scripts/            # Utility scripts
 │   ├── logs/               # API logs
 │   └── README.md           # Backend documentation
-├── xenarch_mk2/            # Core XenArch analysis library
 ├── uploads/                # Uploaded terrain files (created at runtime)
 ├── analysis_results/       # Analysis results (created at runtime)
-├── scripts/                # Utility scripts
-├── main.py                 # Command-line entry point
-└── requirements.txt        # Python dependencies
+├── buildguide.txt          # Project build guide
+└── README.md               # Project documentation
 ```
 
 ## Setup and Installation
@@ -64,7 +69,7 @@ xenarch/
    python app.py
    ```
 
-   The API will be available at http://localhost:5000
+   The API will be available at http://localhost:5001
 
 ### Frontend Setup
 
@@ -94,6 +99,26 @@ xenarch/
 4. Click "Start Analysis" to begin processing
 5. View the results, sorted by fractal dimension
 6. Click on any terrain patch to view detailed metrics and download options
+
+## Command Line Interface
+
+The backend also provides a command-line interface for direct access to the pipeline:
+
+```bash
+cd backend
+
+# Run the complete pipeline
+python cli.py complete -i terrain.tif -o output_dir
+
+# Only split terrain
+python cli.py split -i terrain.tif -o output_dir
+
+# Generate metrics for existing splits
+python cli.py metrics -i split_dir
+
+# Analyze existing metrics
+python cli.py analyze -i metrics_dir
+```
 
 ## Development
 

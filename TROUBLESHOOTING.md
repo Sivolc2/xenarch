@@ -70,6 +70,28 @@ This error occurs during the analysis phase when the JSON metrics files don't ha
 
 If you encounter this error, make sure you're using the latest versions of these files.
 
+### 5. Watchdog Import Error
+
+**Error**:
+```
+ImportError: cannot import name 'EVENT_TYPE_OPENED' from 'watchdog.events'
+```
+
+**Solution**:
+This error occurs when Flask's debug mode tries to use the watchdog library but encounters a version incompatibility. There are two ways to fix it:
+
+1. Force Flask to use the basic stat reloader instead of watchdog by changing the app.run() call:
+   ```python
+   app.run(debug=True, host='0.0.0.0', port=5001, use_reloader=True, reloader_type='stat')
+   ```
+
+2. Install a compatible version of watchdog:
+   ```bash
+   pip install watchdog==2.1.9
+   ```
+
+The current version of the application uses the first approach for simplicity.
+
 ## Frontend Issues
 
 ### 1. JavaScript Errors

@@ -18,15 +18,16 @@ import numpy as np
 import rasterio
 from PIL import Image
 
-# Add parent directory to sys.path to import xenarch_mk2
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Add the current directory to sys.path if not already there
+current_dir = os.path.dirname(os.path.abspath(__file__))
+if current_dir not in sys.path:
+    sys.path.insert(0, current_dir)
 
 # Configuration
-BASE_DIR = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-BACKEND_DIR = BASE_DIR / 'backend'
-UPLOAD_FOLDER = BASE_DIR / 'uploads'
-RESULTS_FOLDER = BASE_DIR / 'analysis_results'
-LOGS_DIR = BACKEND_DIR / 'logs'
+BASE_DIR = Path(os.path.dirname(os.path.abspath(__file__)))
+UPLOAD_FOLDER = BASE_DIR / '../uploads'
+RESULTS_FOLDER = BASE_DIR / '../analysis_results'
+LOGS_DIR = BASE_DIR / 'logs'
 ALLOWED_EXTENSIONS = {'tif', 'tiff'}
 
 # Create required directories if they don't exist
@@ -135,10 +136,10 @@ def upload_file():
     
     # Run the XenArch pipeline command
     try:
-        main_script = BASE_DIR / 'main.py'
+        cli_script = BASE_DIR / 'cli.py'
         
         command = [
-            'python', str(main_script), 'complete',
+            'python', str(cli_script), 'complete',
             '-i', str(file_path),
             '-o', str(job_results_dir),
             '--grid-size', params['grid_size'],
@@ -383,5 +384,5 @@ def get_raw_tif(job_id, grid_id):
 
 
 if __name__ == '__main__':
-    # For development only
-    app.run(debug=True, host='0.0.0.0', port=5001) 
+    # For development only - using the basic stat reloader instead of watchdog
+    app.run(debug=True, host='0.0.0.0', port=5001, use_reloader=True, reloader_type='stat') 
