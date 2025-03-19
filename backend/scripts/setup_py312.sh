@@ -5,21 +5,63 @@
 
 echo "Setting up XenArch for Python 3.12..."
 
-# Ensure we have Python 3.12
-python_version=$(python3 --version)
-if [[ $python_version != *"3.12"* ]]; then
-    echo "Warning: Python 3.12 not found. Current version: $python_version"
-    echo "You may need to install Python 3.12 first."
-    echo ""
-    echo "On Ubuntu: sudo apt install python3.12 python3.12-venv python3.12-dev"
-    echo "On macOS: brew install python@3.12"
-    echo ""
-    read -p "Continue with current Python version? (y/n) " -n 1 -r
-    echo ""
-    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-        exit 1
+# Check if Python 3.12 is installed
+if command -v python3.12 &> /dev/null; then
+    echo "Python 3.12 found!"
+    PYTHON_CMD="python3.12"
+else
+    echo "Python 3.12 not found. Attempting to install..."
+    
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        # Check if we're running as root
+        if [ "$EUID" -ne 0 ]; then
+            echo "Please run as root or with sudo to install Python 3.12."
+            exit 1
+        fi
+        
+        # Install Python 3.12 on Ubuntu/Debian
+        echo "Adding deadsnakes PPA for Python 3.12..."
+        apt update
+        apt install -y software-properties-common
+        add-apt-repository -y ppa:deadsnakes/ppa
+        apt update
+        apt install -y python3.12 python3.12-venv python3.12-dev python3.12-distutils
+        
+        if command -v python3.12 &> /dev/null; then
+            echo "Python 3.12 successfully installed!"
+            PYTHON_CMD="python3.12"
+        else
+            echo "Failed to install Python 3.12. Please install it manually."
+            exit 1
+        fi
+    # elif [[ "$OSTYPE" == "darwin"* ]]; then
+    #     # Install Python 3.12 on macOS
+    #     echo "Checking Homebrew..."
+    #     if ! command -v brew &> /dev/null; then
+    #         echo "Homebrew not found. Please install Homebrew first:"
+    #         echo "/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
+    #         exit 1
+    #     fi
+        
+    #     echo "Installing Python 3.12 via Homebrew..."
+    #     brew install python@3.12
+        
+    #     if command -v python3.12 &> /dev/null; then
+    #         echo "Python 3.12 successfully installed!"
+    #         PYTHON_CMD="python3.12"
+    #     else
+    #         echo "Failed to install Python 3.12. Please install it manually."
+    #         exit 1
+    #     fi
+    # else
+    #     echo "Unsupported OS. Please install Python 3.12 manually."
+    #     exit 1
     fi
 fi
+
+# Verify Python version
+python_version=$($PYTHON_CMD --version)
+echo "Using $python_version"
 
 # Install required system dependencies
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
@@ -54,10 +96,14 @@ else
 fi
 
 # Set up virtual environment
-echo "Setting up Python virtual environment..."
+echo "Setting up Python virtual environment with Python 3.12..."
 cd "$(dirname "$0")/.."
-python3 -m venv venv
+$PYTHON_CMD -m venv venv
 source venv/bin/activate
+
+# Verify venv Python version
+python_venv_version=$(python --version)
+echo "Virtual environment using $python_venv_version"
 
 # Upgrade pip and install critical packages
 echo "Upgrading pip and installing setuptools..."

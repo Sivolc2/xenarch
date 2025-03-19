@@ -20,23 +20,42 @@ This guide covers deploying the XenArch Terrain Analysis application on a Digita
 ssh root@your_droplet_ip
 ```
 
-## 3. Update System and Install Dependencies
+## 3. Install Python 3.12
 
 ```bash
 # Update package lists
 apt update
+apt install -y software-properties-common
 
+# Add deadsnakes PPA for Python 3.12
+add-apt-repository -y ppa:deadsnakes/ppa
+apt update
+
+# Install Python 3.12 and required packages
+apt install -y python3.12 python3.12-venv python3.12-dev python3.12-distutils
+
+# Verify installation
+python3.12 --version
+```
+
+## 4. Install System Dependencies
+
+```bash
 # Install system dependencies
-apt install -y python3-pip python3-venv nginx supervisor
+apt install -y nginx supervisor
 
 # Install GDAL dependencies
 apt install -y gdal-bin libgdal-dev
 
-# For Python 3.12 compatibility, ensure setuptools is installed globally
-python3 -m pip install --upgrade pip setuptools wheel
+# Install build essentials and scientific computing dependencies
+apt install -y build-essential libatlas-base-dev gfortran
+
+# Install Python Pip for Python 3.12
+apt install -y curl
+curl -sS https://bootstrap.pypa.io/get-pip.py | python3.12
 ```
 
-## 4. Set Up Project Structure
+## 5. Set Up Project Structure
 
 ```bash
 # Create application directory
@@ -47,7 +66,7 @@ cd /var/www/xenarch
 mkdir -p uploads analysis_results logs
 ```
 
-## 5. Clone and Configure the Application
+## 6. Clone and Configure the Application
 
 ```bash
 # Install Git if not already installed
@@ -57,53 +76,56 @@ apt install -y git
 git clone https://github.com/yourusername/xenarch.git .
 ```
 
-## 6. Set Up Backend
+## 7. Set Up Backend with Python 3.12
 
 ```bash
 # Navigate to backend directory
 cd /var/www/xenarch/backend
 
-# Create and activate virtual environment
-python3 -m venv venv
+# Create and activate virtual environment with Python 3.12
+python3.12 -m venv venv
 source venv/bin/activate
 
+# Verify the Python version in the virtual environment
+python --version  # Should show Python 3.12.x
+
 # Ensure pip, setuptools, and wheel are up-to-date
-# This is critical for Python 3.12 compatibility
 pip install --upgrade pip setuptools wheel
 
 # Install Python dependencies
 pip install -r requirements.txt
 
-# Create .env file (if needed)
+# Create .env file for production
 cat > .env << EOF
 FLASK_ENV=production
+HOST=127.0.0.1
+PORT=5001
+ALLOWED_ORIGINS=*
 EOF
 
 # Deactivate virtualenv
 deactivate
 ```
 
-### 6.1 Troubleshooting Python 3.12 Dependency Issues
+### 7.1 Troubleshooting GDAL/Rasterio Installation
 
-If you encounter issues with building dependencies on Python 3.12, try these steps:
+If you encounter issues with the rasterio package:
 
 ```bash
-# Ensure development tools are installed
-apt install -y build-essential python3-dev
+source venv/bin/activate
 
-# Install GDAL system packages 
-apt install -y python3-gdal
-
-# For specific package build issues:
+# Set GDAL configuration and install rasterio
 export GDAL_CONFIG=/usr/bin/gdal-config
 pip install --no-binary :all: rasterio
 
 # If scipy has issues:
-apt install -y libatlas-base-dev gfortran
-pip install scipy --no-binary :all:
+pip install --no-binary :all: scipy
+
+# Exit virtual environment
+deactivate
 ```
 
-## 7. Set Up Frontend
+## 8. Set Up Frontend
 
 If using the React frontend:
 
@@ -121,7 +143,7 @@ npm install
 npm run build
 ```
 
-## 8. Configure Nginx
+## 9. Configure Nginx
 
 Create an Nginx configuration file:
 
@@ -168,7 +190,7 @@ nginx -t
 systemctl restart nginx
 ```
 
-## 9. Configure Supervisor for the Backend
+## 10. Configure Supervisor for the Backend with Python 3.12
 
 Create a supervisor configuration to keep the backend running:
 
@@ -191,7 +213,7 @@ supervisorctl reread
 supervisorctl update
 ```
 
-## 10. Set Permissions
+## 11. Set Permissions
 
 ```bash
 # Set ownership of the application directory
@@ -204,7 +226,7 @@ chmod -R 777 /var/www/xenarch/analysis_results
 chmod -R 777 /var/www/xenarch/logs
 ```
 
-## 11. Configure Firewall (Optional)
+## 12. Configure Firewall (Optional)
 
 ```bash
 # Allow SSH, HTTP, and HTTPS
@@ -216,7 +238,7 @@ ufw allow https
 ufw enable
 ```
 
-## 12. SSL Configuration (Optional but Recommended)
+## 13. SSL Configuration (Optional but Recommended)
 
 ```bash
 # Install Certbot
@@ -226,12 +248,12 @@ apt install -y certbot python3-certbot-nginx
 certbot --nginx -d your_domain.com
 ```
 
-## 13. Verify Deployment
+## 14. Verify Deployment
 
 1. Visit `http://your_domain_or_ip/` to access the frontend
 2. Test API with `curl http://your_domain_or_ip/api/health`
 
-## 14. Monitoring and Maintenance
+## 15. Monitoring and Maintenance
 
 - Check logs in `/var/www/xenarch/logs/`
 - Restart services if needed:
@@ -247,4 +269,19 @@ certbot --nginx -d your_domain.com
   source venv/bin/activate
   pip install -r requirements.txt
   supervisorctl restart xenarch
-  ``` 
+  ```
+
+## 16. Automated Setup with Script
+
+For a streamlined setup, you can use the included setup script:
+
+```bash
+# Navigate to the project directory
+cd /var/www/xenarch
+
+# Make the setup script executable
+chmod +x backend/scripts/setup_py312.sh
+
+# Run the setup script (it will handle Python 3.12 installation)
+sudo backend/scripts/setup_py312.sh
+``` 
