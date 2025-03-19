@@ -1,12 +1,25 @@
+# Flask dependencies
 flask==2.3.3
 werkzeug==2.3.7
 gunicorn==21.2.0
-pillow==10.0.0
-Flask-Cors==4.0.0
+flask-cors==4.0.0
 python-dotenv==1.0.0
-numpy
+
+# Image processing
+pillow==10.0.0
 rasterio
+# Using already installed GDAL version to avoid compatibility issues
+# gdal
+
+# Data processing
+numpy
 scipy
 tifffile
+pandas
+
+# Visualization
+matplotlib
 seaborn
+
+# Utilities
 tqdm 

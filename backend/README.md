@@ -1,6 +1,23 @@
-# XenArch Backend API
+# XenArch Backend
 
-This is the backend API service for the XenArch terrain analysis web application. It provides endpoints for uploading GeoTIFF files, running the XenArch pipeline for fractal dimension analysis, and retrieving the analysis results.
+This is the backend API and core analysis module for the XenArch terrain analysis web application. It provides endpoints for uploading GeoTIFF files, running the analysis pipeline, and retrieving the results.
+
+## Directory Structure
+
+```
+backend/
+├── app.py              # Flask API server
+├── cli.py              # Command line interface for pipeline
+├── core/               # Core analysis modules
+│   ├── utils/          # Utility functions (e.g., terrain splitting)
+│   ├── metrics/        # Metrics generation (e.g., fractal dimensions)
+│   ├── analyzers/      # Analytical processing modules
+│   └── data/           # Data management utilities
+├── scripts/            # Utility scripts
+│   └── analyze_results.py  # Result analysis and visualization
+├── logs/               # Application logs
+└── requirements.txt    # Python dependencies
+```
 
 ## Setup
 
@@ -41,12 +58,30 @@ Start the Flask development server:
 python app.py
 ```
 
-The API will be available at http://localhost:5000.
+The API will be available at http://localhost:5001.
 
 For production deployment, it's recommended to use Gunicorn or uWSGI instead:
 
 ```bash
-gunicorn -w 4 -b 0.0.0.0:5000 app:app
+gunicorn -w 4 -b 0.0.0.0:5001 app:app
+```
+
+## Using the CLI
+
+The CLI provides direct access to the XenArch terrain analysis pipeline:
+
+```bash
+# Run the complete pipeline
+python cli.py complete -i terrain.tif -o output_dir
+
+# Only split terrain
+python cli.py split -i terrain.tif -o output_dir
+
+# Generate metrics for existing splits
+python cli.py metrics -i split_dir
+
+# Analyze existing metrics
+python cli.py analyze -i metrics_dir
 ```
 
 ## API Endpoints
@@ -74,12 +109,6 @@ gunicorn -w 4 -b 0.0.0.0:5000 app:app
 ### Images and Raw Data
 - `GET /api/jobs/<job_id>/thumbnail/<grid_id>` - Get a PNG thumbnail of a terrain grid
 - `GET /api/jobs/<job_id>/raw/<grid_id>` - Download the raw GeoTIFF file for a grid
-
-## Directory Structure
-
-- `app.py` - Main Flask application
-- `requirements.txt` - Python dependencies
-- `logs/` - Application logs directory
 
 ## Error Handling
 

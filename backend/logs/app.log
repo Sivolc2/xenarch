@@ -137,3 +137,254 @@ Found 0 samples meeting conditions
 2025-03-18 15:44:53,665 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
 2025-03-18 15:44:53,669 - werkzeug - WARNING -  * Debugger is active!
 2025-03-18 15:44:53,676 - werkzeug - INFO -  * Debugger PIN: 982-295-925
+2025-03-18 21:56:56,331 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 21:56:56,346 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.1.2:5001
+2025-03-18 21:56:56,346 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 21:57:23,508 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 21:57:23,523 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.1.2:5001
+2025-03-18 21:57:23,523 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 21:57:46,108 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 21:57:46,114 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.1.2:5001
+2025-03-18 21:57:46,114 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 21:59:14,871 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 21:59:14,878 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.1.2:5001
+2025-03-18 21:59:14,878 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 21:59:50,050 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 21:59:50,058 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.1.2:5001
+2025-03-18 21:59:50,058 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 22:21:06,240 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:21:06,249 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.1.2:5001
+2025-03-18 22:21:06,249 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 22:21:06,254 - werkzeug - INFO -  * Restarting with stat
+2025-03-18 22:21:06,562 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:21:06,565 - werkzeug - WARNING -  * Debugger is active!
+2025-03-18 22:21:06,579 - werkzeug - INFO -  * Debugger PIN: 551-761-828
+2025-03-18 22:21:10,256 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 22:21:10] "GET /api/health HTTP/1.1" 200 -
+2025-03-18 22:21:23,178 - __main__ - INFO - Received file upload request
+2025-03-18 22:21:23,488 - __main__ - INFO - File saved to /Users/clovisvinant/Central/Projects/scifi/xenarch/uploads/57c26736-887a-46ab-87d7-c49321db4c6e/at3_1m4_01.tif
+2025-03-18 22:21:23,489 - __main__ - INFO - Running command: python /Users/clovisvinant/Central/Projects/scifi/xenarch/main.py complete -i /Users/clovisvinant/Central/Projects/scifi/xenarch/uploads/57c26736-887a-46ab-87d7-c49321db4c6e/at3_1m4_01.tif -o /Users/clovisvinant/Central/Projects/scifi/xenarch/analysis_results/57c26736-887a-46ab-87d7-c49321db4c6e --grid-size 512 --overlap 64 --fd-min 0.0 --fd-max 0.8 --r2-min 0.8 --max-samples 16 --cpu-fraction 0.8 --plot-output /Users/clovisvinant/Central/Projects/scifi/xenarch/analysis_results/57c26736-887a-46ab-87d7-c49321db4c6e -v
+2025-03-18 22:21:23,629 - __main__ - ERROR - Error running command: Traceback (most recent call last):
+  File "/Users/clovisvinant/Central/Projects/scifi/xenarch/main.py", line 9, in <module>
+    from xenarch_mk2.utils.splitter import TerrainSplitter
+ModuleNotFoundError: No module named 'xenarch_mk2.utils.splitter'
+
+2025-03-18 22:21:23,631 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 22:21:23] "[35m[1mPOST /api/upload HTTP/1.1[0m" 500 -
+2025-03-18 22:26:02,843 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:26:02,845 - werkzeug - WARNING -  * Debugger is active!
+2025-03-18 22:26:02,853 - werkzeug - INFO -  * Debugger PIN: 551-761-828
+2025-03-18 22:26:32,128 - werkzeug - INFO -  * Detected change in '/Users/clovisvinant/Central/Projects/scifi/xenarch/backend/core/__init__.py', reloading
+2025-03-18 22:26:32,638 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:26:32,641 - werkzeug - WARNING -  * Debugger is active!
+2025-03-18 22:26:32,649 - werkzeug - INFO -  * Debugger PIN: 551-761-828
+2025-03-18 22:26:46,775 - werkzeug - INFO -  * Detected change in '/Users/clovisvinant/Central/Projects/scifi/xenarch/backend/scripts/__init__.py', reloading
+2025-03-18 22:26:47,201 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:26:47,204 - werkzeug - WARNING -  * Debugger is active!
+2025-03-18 22:26:47,211 - werkzeug - INFO -  * Debugger PIN: 551-761-828
+2025-03-18 22:27:20,626 - werkzeug - INFO -  * Detected change in '/Users/clovisvinant/Central/Projects/scifi/xenarch/backend/cli.py', reloading
+2025-03-18 22:27:21,039 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:27:21,044 - werkzeug - WARNING -  * Debugger is active!
+2025-03-18 22:27:21,051 - werkzeug - INFO -  * Debugger PIN: 551-761-828
+2025-03-18 22:27:50,400 - werkzeug - INFO -  * Detected change in '/Users/clovisvinant/Central/Projects/scifi/xenarch/backend/app.py', reloading
+2025-03-18 22:27:50,794 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:27:50,797 - werkzeug - WARNING -  * Debugger is active!
+2025-03-18 22:27:50,805 - werkzeug - INFO -  * Debugger PIN: 551-761-828
+2025-03-18 22:28:01,899 - werkzeug - INFO -  * Detected change in '/Users/clovisvinant/Central/Projects/scifi/xenarch/backend/scripts/analyze_results.py', reloading
+2025-03-18 22:28:02,849 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:28:02,855 - werkzeug - WARNING -  * Debugger is active!
+2025-03-18 22:28:02,867 - werkzeug - INFO -  * Debugger PIN: 551-761-828
+2025-03-18 22:28:08,943 - werkzeug - INFO -  * Detected change in '/Users/clovisvinant/Central/Projects/scifi/xenarch/backend/core/utils/__init__.py', reloading
+2025-03-18 22:28:09,372 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:28:09,376 - werkzeug - WARNING -  * Debugger is active!
+2025-03-18 22:28:09,383 - werkzeug - INFO -  * Debugger PIN: 551-761-828
+2025-03-18 22:28:15,579 - werkzeug - INFO -  * Detected change in '/Users/clovisvinant/Central/Projects/scifi/xenarch/backend/core/metrics/__init__.py', reloading
+2025-03-18 22:28:16,065 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:28:16,068 - werkzeug - WARNING -  * Debugger is active!
+2025-03-18 22:28:16,075 - werkzeug - INFO -  * Debugger PIN: 551-761-828
+2025-03-18 22:28:21,125 - werkzeug - INFO -  * Detected change in '/Users/clovisvinant/Central/Projects/scifi/xenarch/backend/core/analyzers/__init__.py', reloading
+2025-03-18 22:28:21,723 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:28:21,726 - werkzeug - WARNING -  * Debugger is active!
+2025-03-18 22:28:21,733 - werkzeug - INFO -  * Debugger PIN: 551-761-828
+2025-03-18 22:28:27,804 - werkzeug - INFO -  * Detected change in '/Users/clovisvinant/Central/Projects/scifi/xenarch/backend/core/data/__init__.py', reloading
+2025-03-18 22:28:28,172 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:28:28,177 - werkzeug - WARNING -  * Debugger is active!
+2025-03-18 22:28:28,183 - werkzeug - INFO -  * Debugger PIN: 551-761-828
+2025-03-18 22:29:18,761 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:35:58,972 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:35:58,979 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.1.2:5001
+2025-03-18 22:35:58,979 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 22:35:58,983 - werkzeug - INFO -  * Restarting with stat
+2025-03-18 22:35:59,272 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:35:59,275 - werkzeug - WARNING -  * Debugger is active!
+2025-03-18 22:35:59,286 - werkzeug - INFO -  * Debugger PIN: 551-761-828
+2025-03-18 22:37:44,273 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:37:44,281 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5002
+ * Running on http://192.168.1.2:5002
+2025-03-18 22:37:44,281 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 22:37:44,285 - werkzeug - INFO -  * Restarting with stat
+2025-03-18 22:37:44,642 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:37:44,644 - werkzeug - WARNING -  * Debugger is active!
+2025-03-18 22:37:44,656 - werkzeug - INFO -  * Debugger PIN: 551-761-828
+2025-03-18 22:37:58,058 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:37:58,071 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5002
+ * Running on http://192.168.1.2:5002
+2025-03-18 22:37:58,071 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 22:37:58,075 - werkzeug - INFO -  * Restarting with stat
+2025-03-18 22:37:58,380 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:37:58,382 - werkzeug - WARNING -  * Debugger is active!
+2025-03-18 22:37:58,388 - werkzeug - INFO -  * Debugger PIN: 551-761-828
+2025-03-18 22:37:59,398 - werkzeug - INFO -  * Detected change in '/Users/clovisvinant/Central/Projects/scifi/xenarch/backend/app.py', reloading
+2025-03-18 22:37:59,449 - werkzeug - INFO -  * Restarting with stat
+2025-03-18 22:37:59,680 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:37:59,681 - werkzeug - WARNING -  * Debugger is active!
+2025-03-18 22:37:59,686 - werkzeug - INFO -  * Debugger PIN: 551-761-828
+2025-03-18 22:38:15,026 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:38:15,032 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5002
+ * Running on http://192.168.1.2:5002
+2025-03-18 22:38:15,032 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 22:38:15,035 - werkzeug - INFO -  * Restarting with stat
+2025-03-18 22:38:15,302 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:38:15,304 - werkzeug - WARNING -  * Debugger is active!
+2025-03-18 22:38:15,315 - werkzeug - INFO -  * Debugger PIN: 551-761-828
+2025-03-18 22:38:18,667 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 22:38:18] "[33mGET / HTTP/1.1[0m" 404 -
+2025-03-18 22:38:19,278 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 22:38:19] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-03-18 22:40:43,391 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:40:43,401 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.1.2:5001
+2025-03-18 22:40:43,401 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 22:40:43,405 - werkzeug - INFO -  * Restarting with stat
+2025-03-18 22:40:43,655 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:40:43,656 - werkzeug - WARNING -  * Debugger is active!
+2025-03-18 22:40:43,664 - werkzeug - INFO -  * Debugger PIN: 551-761-828
+2025-03-18 22:40:52,597 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 22:40:52] "GET /api/health HTTP/1.1" 200 -
+2025-03-18 22:40:53,972 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 22:40:53] "GET /api/health HTTP/1.1" 200 -
+2025-03-18 22:40:54,991 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 22:40:54] "GET /api/health HTTP/1.1" 200 -
+2025-03-18 22:41:12,237 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 22:41:12] "GET /api/health HTTP/1.1" 200 -
+2025-03-18 22:41:16,757 - __main__ - INFO - Received file upload request
+2025-03-18 22:41:16,772 - __main__ - INFO - File saved to /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/../uploads/b0f0c86e-8cea-429d-be6a-ea07faf1601e/at3_1m4_01.tif
+2025-03-18 22:41:16,772 - __main__ - INFO - Running command: python /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/cli.py complete -i /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/../uploads/b0f0c86e-8cea-429d-be6a-ea07faf1601e/at3_1m4_01.tif -o /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/../analysis_results/b0f0c86e-8cea-429d-be6a-ea07faf1601e --grid-size 512 --overlap 64 --fd-min 0.0 --fd-max 0.8 --r2-min 0.8 --max-samples 16 --cpu-fraction 0.8 --plot-output /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/../analysis_results/b0f0c86e-8cea-429d-be6a-ea07faf1601e -v
+2025-03-18 22:41:20,133 - __main__ - INFO - Command completed successfully: Using 6 CPU cores
+Loaded 2 total samples
+Found 0 samples meeting conditions
+
+2025-03-18 22:41:20,134 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 22:41:20] "POST /api/upload HTTP/1.1" 200 -
+2025-03-18 22:41:25,157 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 22:41:25] "GET /api/jobs/b0f0c86e-8cea-429d-be6a-ea07faf1601e/status HTTP/1.1" 200 -
+2025-03-18 22:41:25,163 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 22:41:25] "GET /api/jobs/b0f0c86e-8cea-429d-be6a-ea07faf1601e/results HTTP/1.1" 200 -
+2025-03-18 22:41:25,302 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 22:41:25] "GET /api/jobs/b0f0c86e-8cea-429d-be6a-ea07faf1601e/thumbnail/grid_00000_00000 HTTP/1.1" 200 -
+2025-03-18 22:47:13,922 - werkzeug - INFO -  * Detected change in '/Users/clovisvinant/Central/Projects/scifi/xenarch/backend/scripts/split_terrain.py', reloading
+2025-03-18 22:47:14,123 - werkzeug - INFO -  * Restarting with stat
+2025-03-18 22:47:14,623 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:47:14,626 - werkzeug - WARNING -  * Debugger is active!
+2025-03-18 22:47:14,633 - werkzeug - INFO -  * Debugger PIN: 551-761-828
+2025-03-18 22:47:23,759 - werkzeug - INFO -  * Detected change in '/Users/clovisvinant/Central/Projects/scifi/xenarch/backend/scripts/generate_metrics.py', reloading
+2025-03-18 22:47:23,823 - werkzeug - INFO -  * Restarting with stat
+2025-03-18 22:47:24,204 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:47:24,221 - werkzeug - WARNING -  * Debugger is active!
+2025-03-18 22:47:24,232 - werkzeug - INFO -  * Debugger PIN: 551-761-828
+2025-03-18 22:47:49,280 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:47:56,672 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:47:56,680 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.1.2:5001
+2025-03-18 22:47:56,680 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 22:47:56,684 - werkzeug - INFO -  * Restarting with stat
+2025-03-18 22:47:56,979 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:47:56,981 - werkzeug - WARNING -  * Debugger is active!
+2025-03-18 22:47:56,990 - werkzeug - INFO -  * Debugger PIN: 551-761-828
+2025-03-18 22:48:49,599 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:48:49,606 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5002
+ * Running on http://192.168.1.2:5002
+2025-03-18 22:48:49,606 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 22:48:49,611 - werkzeug - INFO -  * Restarting with stat
+2025-03-18 22:48:49,846 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:48:49,847 - werkzeug - WARNING -  * Debugger is active!
+2025-03-18 22:48:49,857 - werkzeug - INFO -  * Debugger PIN: 551-761-828
+2025-03-18 22:48:51,606 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 22:48:51] "GET /api/health HTTP/1.1" 200 -
+2025-03-18 22:49:14,126 - werkzeug - INFO -  * Detected change in '/Users/clovisvinant/Central/Projects/scifi/xenarch/backend/scripts/split_terrain.py', reloading
+2025-03-18 22:49:14,208 - werkzeug - INFO -  * Restarting with stat
+2025-03-18 22:49:14,545 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:49:14,547 - werkzeug - WARNING -  * Debugger is active!
+2025-03-18 22:49:14,553 - werkzeug - INFO -  * Debugger PIN: 551-761-828
+2025-03-18 22:49:18,372 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:49:31,089 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:49:31,097 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5002
+ * Running on http://192.168.1.2:5002
+2025-03-18 22:49:31,097 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 22:49:31,102 - werkzeug - INFO -  * Restarting with stat
+2025-03-18 22:49:31,355 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:49:31,357 - werkzeug - WARNING -  * Debugger is active!
+2025-03-18 22:49:31,365 - werkzeug - INFO -  * Debugger PIN: 551-761-828
+2025-03-18 22:51:05,448 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:51:05,455 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.1.2:5001
+2025-03-18 22:51:05,455 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 22:51:05,460 - werkzeug - INFO -  * Restarting with stat
+2025-03-18 22:51:05,815 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:51:05,816 - werkzeug - WARNING -  * Debugger is active!
+2025-03-18 22:51:05,824 - werkzeug - INFO -  * Debugger PIN: 551-761-828
+2025-03-18 22:51:09,437 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 22:51:09] "GET /api/health HTTP/1.1" 200 -
+2025-03-18 22:51:42,170 - werkzeug - INFO -  * Detected change in '/Users/clovisvinant/Central/Projects/scifi/xenarch/backend/app.py', reloading
+2025-03-18 22:51:42,241 - werkzeug - INFO -  * Restarting with stat
+2025-03-18 22:51:42,627 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:51:42,630 - werkzeug - WARNING -  * Debugger is active!
+2025-03-18 22:51:42,637 - werkzeug - INFO -  * Debugger PIN: 551-761-828
+2025-03-18 22:51:46,814 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:51:59,231 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:51:59,237 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.1.2:5001
+2025-03-18 22:51:59,237 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-18 22:51:59,240 - werkzeug - INFO -  * Restarting with stat
+2025-03-18 22:51:59,531 - dotenv.main - WARNING - Python-dotenv could not parse statement starting at line 1
+2025-03-18 22:51:59,533 - werkzeug - WARNING -  * Debugger is active!
+2025-03-18 22:51:59,541 - werkzeug - INFO -  * Debugger PIN: 551-761-828
+2025-03-18 22:52:02,545 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 22:52:02] "GET /api/health HTTP/1.1" 200 -
+2025-03-18 22:52:04,668 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 22:52:04] "GET /api/health HTTP/1.1" 200 -
+2025-03-18 22:52:09,204 - __main__ - INFO - Received file upload request
+2025-03-18 22:52:09,211 - __main__ - INFO - File saved to /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/../uploads/169de40a-173f-4060-8e8f-c932bff7e080/at3_1m4_01.tif
+2025-03-18 22:52:09,212 - __main__ - INFO - Running command: python /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/cli.py complete -i /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/../uploads/169de40a-173f-4060-8e8f-c932bff7e080/at3_1m4_01.tif -o /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/../analysis_results/169de40a-173f-4060-8e8f-c932bff7e080 --grid-size 512 --overlap 64 --fd-min 0.0 --fd-max 0.8 --r2-min 0.8 --max-samples 16 --cpu-fraction 0.8 --plot-output /Users/clovisvinant/Central/Projects/scifi/xenarch/backend/../analysis_results/169de40a-173f-4060-8e8f-c932bff7e080 -v
+2025-03-18 22:52:12,989 - __main__ - INFO - Command completed successfully: Using 6 CPU cores
+Loaded 2 total samples
+Found 0 samples meeting conditions
+
+2025-03-18 22:52:12,990 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 22:52:12] "POST /api/upload HTTP/1.1" 200 -
+2025-03-18 22:52:18,007 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 22:52:18] "GET /api/jobs/169de40a-173f-4060-8e8f-c932bff7e080/status HTTP/1.1" 200 -
+2025-03-18 22:52:18,017 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 22:52:18] "GET /api/jobs/169de40a-173f-4060-8e8f-c932bff7e080/results HTTP/1.1" 200 -
+2025-03-18 22:52:18,148 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 22:52:18] "GET /api/jobs/169de40a-173f-4060-8e8f-c932bff7e080/thumbnail/grid_00000_00000 HTTP/1.1" 200 -
+2025-03-18 22:52:36,179 - werkzeug - INFO - 127.0.0.1 - - [18/Mar/2025 22:52:36] "GET /api/jobs/169de40a-173f-4060-8e8f-c932bff7e080/raw/grid_00000_00000 HTTP/1.1" 200 -
