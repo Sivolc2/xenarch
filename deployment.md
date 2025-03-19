@@ -127,7 +127,7 @@ deactivate
 
 ## 8. Set Up Frontend
 
-If using the React frontend:
+### 8.1 For Production (Build Static Files)
 
 ```bash
 # Install Node.js and npm if needed
@@ -141,6 +141,43 @@ npm install
 
 # Build the app for production
 npm run build
+```
+
+### 8.2 For Development Mode (Run Development Server)
+
+If you want to run the frontend in development mode on the server:
+
+```bash
+# Install Node.js and npm if needed (if not done already)
+apt install -y nodejs npm
+
+# Navigate to frontend directory
+cd /var/www/xenarch/frontend
+
+# Install dependencies (if not done already)
+npm install
+
+# Create a development environment file
+cat > .env.development << EOF
+HOST=0.0.0.0
+PORT=3000
+BROWSER=none
+WDS_SOCKET_HOST=0.0.0.0
+DANGEROUSLY_DISABLE_HOST_CHECK=true
+CHOKIDAR_USEPOLLING=true
+EOF
+
+# Start the development server (this will keep running in the terminal)
+npm run start
+
+# To run in the background:
+# nohup npm run start > frontend.log 2>&1 &
+```
+
+When running in development mode, open your firewall to allow access to port 3000:
+
+```bash
+ufw allow 3000/tcp
 ```
 
 ## 9. Configure Nginx
